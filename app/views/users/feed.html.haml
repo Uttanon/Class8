@@ -1,0 +1,25 @@
+%p#notice= notice
+%p#alert= alert
+%h1 Feed of #{@user.name} (id : #{@user.id})
+.container
+  .row
+    .col
+      -@allpost.each do |post|
+        .col
+          .d-flex.p-2.border.border-primary.rounded
+            Username : #{User.find(post.user_id).name} 
+            id : #{post.user_id} <br> 
+            Msg : #{post.msg} <br> 
+            Created-at : #{post.created_at} <br> 
+            Updated-at : #{post.updated_at}
+            = render 'likeModal', p: post
+          .col
+            %button.btn.btn-primary{"data-bs-target" => "#p#{post.id}", "data-bs-toggle" => "modal", type: "button"} Show like
+            - if Like.find_by(post_id: post.id,likeUser: session[:user_id]) == nil
+              = button_to 'Like', '/like', params: {pid: post.id}, class: 'btn btn-outline-primary'
+            - else
+              = button_to 'Unlike', '/unlike', params: {pid: post.id}, class: 'btn btn-outline-primary'
+        %p
+    .col
+      = link_to 'Post', :new_post, class: 'btn btn-outline-primary'
+

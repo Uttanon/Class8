@@ -1,0 +1,1312 @@
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT sqlite_version(*)[0m
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT sqlite_version(*)[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT sqlite_version(*)[0m
+  [1m[35m (0.0ms)[0m  [1m[34mSELECT sqlite_version(*)[0m
+  [1m[35m (0.0ms)[0m  [1m[35mDROP TABLE IF EXISTS "follows"[0m
+  [1m[35m (7.9ms)[0m  [1m[35mCREATE TABLE "follows" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "follower_id" integer, "followee_id" integer, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL)[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE IF EXISTS "likes"[0m
+  [1m[35m (5.7ms)[0m  [1m[35mCREATE TABLE "likes" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "post_id" integer NOT NULL, "likeUser" varchar, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL)[0m
+  [1m[35m (6.7ms)[0m  [1m[35mCREATE INDEX "index_likes_on_post_id" ON "likes" ("post_id")[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE IF EXISTS "posts"[0m
+  [1m[35m (5.5ms)[0m  [1m[35mCREATE TABLE "posts" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "user_id" integer NOT NULL, "msg" varchar, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL)[0m
+  [1m[35m (5.4ms)[0m  [1m[35mCREATE INDEX "index_posts_on_user_id" ON "posts" ("user_id")[0m
+  [1m[35m (0.0ms)[0m  [1m[35mDROP TABLE IF EXISTS "users"[0m
+  [1m[35m (5.3ms)[0m  [1m[35mCREATE TABLE "users" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar, "email" varchar, "password_digest" varchar, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL)[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = ON[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TEMPORARY TABLE "alikes" ("id" integer NOT NULL PRIMARY KEY, "post_id" integer NOT NULL, "likeUser" varchar DEFAULT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL)[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "tindex_alikes_on_post_id" ON "alikes" ("post_id")[0m
+  [1m[35m (0.0ms)[0m  [1m[32mINSERT INTO "alikes" ("id","post_id","likeUser","created_at","updated_at")
+                     SELECT "id","post_id","likeUser","created_at","updated_at" FROM "likes"[0m
+  [1m[35m (1.5ms)[0m  [1m[35mDROP TABLE "likes"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TABLE "likes" ("id" integer NOT NULL PRIMARY KEY, "post_id" integer NOT NULL, "likeUser" varchar DEFAULT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, CONSTRAINT "fk_rails_87a8aac469"
+FOREIGN KEY ("post_id")
+  REFERENCES "posts" ("id")
+)[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_likes_on_post_id" ON "likes" ("post_id")[0m
+  [1m[35m (0.0ms)[0m  [1m[32mINSERT INTO "likes" ("id","post_id","likeUser","created_at","updated_at")
+                     SELECT "id","post_id","likeUser","created_at","updated_at" FROM "alikes"[0m
+  [1m[35m (0.0ms)[0m  [1m[35mDROP TABLE "alikes"[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = 0[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
+  [1m[36mTRANSACTION (4.7ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = ON[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TEMPORARY TABLE "aposts" ("id" integer NOT NULL PRIMARY KEY, "user_id" integer NOT NULL, "msg" varchar DEFAULT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL)[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "tindex_aposts_on_user_id" ON "aposts" ("user_id")[0m
+  [1m[35m (0.0ms)[0m  [1m[32mINSERT INTO "aposts" ("id","user_id","msg","created_at","updated_at")
+                     SELECT "id","user_id","msg","created_at","updated_at" FROM "posts"[0m
+  [1m[35m (1.5ms)[0m  [1m[35mDROP TABLE "posts"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TABLE "posts" ("id" integer NOT NULL PRIMARY KEY, "user_id" integer NOT NULL, "msg" varchar DEFAULT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, CONSTRAINT "fk_rails_5b5ddfd518"
+FOREIGN KEY ("user_id")
+  REFERENCES "users" ("id")
+)[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_posts_on_user_id" ON "posts" ("user_id")[0m
+  [1m[35m (0.1ms)[0m  [1m[32mINSERT INTO "posts" ("id","user_id","msg","created_at","updated_at")
+                     SELECT "id","user_id","msg","created_at","updated_at" FROM "aposts"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE "aposts"[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = 0[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
+  [1m[36mTRANSACTION (5.3ms)[0m  [1m[36mcommit transaction[0m
+  [1m[35m (6.3ms)[0m  [1m[35mCREATE TABLE "schema_migrations" ("version" varchar NOT NULL PRIMARY KEY)[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[35m (6.3ms)[0m  [1m[32mINSERT INTO "schema_migrations" (version) VALUES (20211031133033)[0m
+  [1m[35m (8.9ms)[0m  [1m[32mINSERT INTO "schema_migrations" (version) VALUES
+(20211013152745),
+(20211013172303),
+(20211013191224);
+
+[0m
+  [1m[35m (5.6ms)[0m  [1m[35mCREATE TABLE "ar_internal_metadata" ("key" varchar NOT NULL PRIMARY KEY, "value" varchar, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL)[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.1ms)[0m  [1m[34mSELECT "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? LIMIT ?[0m  [["key", "environment"], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mActiveRecord::InternalMetadata Create (1.0ms)[0m  [1m[32mINSERT INTO "ar_internal_metadata" ("key", "value", "created_at", "updated_at") VALUES (?, ?, ?, ?)[0m  [["key", "environment"], ["value", "test"], ["created_at", "2021-10-31 14:59:11.360441"], ["updated_at", "2021-10-31 14:59:11.360441"]]
+  [1m[36mTRANSACTION (6.2ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.0ms)[0m  [1m[34mSELECT "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? LIMIT ?[0m  [["key", "environment"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::InternalMetadata Load (0.0ms)[0m  [1m[34mSELECT "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? LIMIT ?[0m  [["key", "schema_sha1"], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mActiveRecord::InternalMetadata Create (1.0ms)[0m  [1m[32mINSERT INTO "ar_internal_metadata" ("key", "value", "created_at", "updated_at") VALUES (?, ?, ?, ?)[0m  [["key", "schema_sha1"], ["value", "8a5b0b68041ce2f555fd4f3ff9b0369c36e8fd89"], ["created_at", "2021-10-31 14:59:11.369341"], ["updated_at", "2021-10-31 14:59:11.369341"]]
+  [1m[36mTRANSACTION (5.3ms)[0m  [1m[36mcommit transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[34mSELECT sqlite_version(*)[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = ON[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mFixtures Load (2.6ms)[0m  [1m[31mDELETE FROM "follows";
+DELETE FROM "likes";
+DELETE FROM "posts";
+DELETE FROM "users";
+INSERT INTO "follows" ("id", "follower_id", "followee_id", "created_at", "updated_at") VALUES (980190962, 1, 1, '2021-10-31 14:59:11.427245', '2021-10-31 14:59:11.427245');
+INSERT INTO "follows" ("id", "follower_id", "followee_id", "created_at", "updated_at") VALUES (298486374, 1, 1, '2021-10-31 14:59:11.427245', '2021-10-31 14:59:11.427245');
+INSERT INTO "likes" ("id", "post_id", "likeUser", "created_at", "updated_at") VALUES (980190962, 980190962, 'MyString', '2021-10-31 14:59:11.428330', '2021-10-31 14:59:11.428330');
+INSERT INTO "likes" ("id", "post_id", "likeUser", "created_at", "updated_at") VALUES (298486374, 298486374, 'MyString', '2021-10-31 14:59:11.428330', '2021-10-31 14:59:11.428330');
+INSERT INTO "posts" ("id", "user_id", "msg", "created_at", "updated_at") VALUES (980190962, 980190962, 'MyString', '2021-10-31 14:59:11.428917', '2021-10-31 14:59:11.428917');
+INSERT INTO "posts" ("id", "user_id", "msg", "created_at", "updated_at") VALUES (298486374, 298486374, 'MyString', '2021-10-31 14:59:11.428917', '2021-10-31 14:59:11.428917');
+INSERT INTO "users" ("id", "name", "email", "password_digest", "created_at", "updated_at") VALUES (980190962, 'MyString', 'MyString', 'MyString', '2021-10-31 14:59:11.429482', '2021-10-31 14:59:11.429482');
+INSERT INTO "users" ("id", "name", "email", "password_digest", "created_at", "updated_at") VALUES (298486374, 'MyString', 'MyString', 'MyString', '2021-10-31 14:59:11.429482', '2021-10-31 14:59:11.429482')[0m
+  [1m[36mTRANSACTION (18.6ms)[0m  [1m[36mcommit transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[35mPRAGMA defer_foreign_keys = 0[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+--------------------------------------------
+PostsControllerTest: test_should_update_post
+--------------------------------------------
+  [1m[36mPost Load (0.1ms)[0m  [1m[34mSELECT "posts".* FROM "posts" WHERE "posts"."id" = ? LIMIT ?[0m  [["id", 980190962], ["LIMIT", 1]]
+Started PATCH "/posts/980190962" for 127.0.0.1 at 2021-10-31 21:59:11 +0700
+Processing by PostsController#update as HTML
+  Parameters: {"post"=>{"msg"=>"MyString", "user_id"=>"980190962"}, "id"=>"980190962"}
+  [1m[36mPost Load (0.1ms)[0m  [1m[34mSELECT "posts".* FROM "posts" WHERE "posts"."id" = ? LIMIT ?[0m  [["id", 980190962], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 980190962], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+Redirected to http://www.example.com/posts/980190962
+Completed 302 Found in 10ms (ActiveRecord: 0.2ms | Allocations: 7808)
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+--------------------------------------------
+PostsControllerTest: test_should_create_post
+--------------------------------------------
+  [1m[36mPost Load (0.0ms)[0m  [1m[34mSELECT "posts".* FROM "posts" WHERE "posts"."id" = ? LIMIT ?[0m  [["id", 980190962], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[34mSELECT COUNT(*) FROM "posts"[0m
+Started POST "/posts" for 127.0.0.1 at 2021-10-31 21:59:11 +0700
+Processing by PostsController#create as HTML
+  Parameters: {"post"=>{"msg"=>"MyString", "user_id"=>"980190962"}}
+Redirected to http://www.example.com/feed
+Filter chain halted as :match_id_post_params rendered or redirected
+Completed 302 Found in 0ms (ActiveRecord: 0.0ms | Allocations: 317)
+  [1m[35m (0.0ms)[0m  [1m[34mSELECT COUNT(*) FROM "posts"[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+------------------------------------------
+PostsControllerTest: test_should_get_index
+------------------------------------------
+  [1m[36mPost Load (0.0ms)[0m  [1m[34mSELECT "posts".* FROM "posts" WHERE "posts"."id" = ? LIMIT ?[0m  [["id", 980190962], ["LIMIT", 1]]
+Started GET "/posts" for 127.0.0.1 at 2021-10-31 21:59:11 +0700
+Processing by PostsController#index as HTML
+  Rendering layout layouts/application.html.haml
+  Rendering posts/index.html.haml within layouts/application
+  [1m[36mPost Load (0.1ms)[0m  [1m[34mSELECT "posts".* FROM "posts"[0m
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 298486374], ["LIMIT", 1]]
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 980190962], ["LIMIT", 1]]
+  Rendered posts/index.html.haml within layouts/application (Duration: 5.8ms | Allocations: 5793)
+[Webpacker] Compiling...
+[Webpacker] Compiled all packs in /home/uttanon/class7/public/packs-test
+[Webpacker] Hash: 31b351f6be346d3a55f8
+Version: webpack 4.46.0
+Time: 928ms
+Built at: 10/31/2021 9:59:14 PM
+                                     Asset       Size       Chunks                         Chunk Names
+    js/application-dd998cb6b794ecb7e8af.js    125 KiB  application  [emitted] [immutable]  application
+js/application-dd998cb6b794ecb7e8af.js.map    139 KiB  application  [emitted] [dev]        application
+                             manifest.json  384 bytes               [emitted]              
+Entrypoint application = js/application-dd998cb6b794ecb7e8af.js js/application-dd998cb6b794ecb7e8af.js.map
+[./app/javascript/channels sync recursive _channel\.js$] ./app/javascript/channels sync _channel\.js$ 160 bytes {application} [built]
+[./app/javascript/channels/index.js] 211 bytes {application} [built]
+[./app/javascript/packs/application.js] 492 bytes {application} [built]
+[./node_modules/webpack/buildin/module.js] (webpack)/buildin/module.js 552 bytes {application} [built]
+    + 3 hidden modules
+
+  Rendered layouts/_navigation.html.haml (Duration: 6.2ms | Allocations: 13692)
+  Rendered layout layouts/application.html.haml (Duration: 2842.3ms | Allocations: 46234)
+Completed 200 OK in 2844ms (Views: 2843.4ms | ActiveRecord: 0.2ms | Allocations: 48525)
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+------------------------------------------
+PostsControllerTest: test_should_show_post
+------------------------------------------
+  [1m[36mPost Load (0.1ms)[0m  [1m[34mSELECT "posts".* FROM "posts" WHERE "posts"."id" = ? LIMIT ?[0m  [["id", 980190962], ["LIMIT", 1]]
+Started GET "/posts/980190962" for 127.0.0.1 at 2021-10-31 21:59:14 +0700
+Processing by PostsController#show as HTML
+  Parameters: {"id"=>"980190962"}
+  [1m[36mPost Load (0.0ms)[0m  [1m[34mSELECT "posts".* FROM "posts" WHERE "posts"."id" = ? LIMIT ?[0m  [["id", 980190962], ["LIMIT", 1]]
+  Rendering layout layouts/application.html.haml
+  Rendering posts/show.html.haml within layouts/application
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 980190962], ["LIMIT", 1]]
+  Rendered posts/show.html.haml within layouts/application (Duration: 1.9ms | Allocations: 2328)
+[Webpacker] Everything's up-to-date. Nothing to do
+  Rendered layouts/_navigation.html.haml (Duration: 0.0ms | Allocations: 18)
+  Rendered layout layouts/application.html.haml (Duration: 3.7ms | Allocations: 4440)
+Completed 200 OK in 5ms (Views: 3.7ms | ActiveRecord: 0.3ms | Allocations: 5131)
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+---------------------------------------------
+PostsControllerTest: test_should_destroy_post
+---------------------------------------------
+  [1m[36mPost Load (0.0ms)[0m  [1m[34mSELECT "posts".* FROM "posts" WHERE "posts"."id" = ? LIMIT ?[0m  [["id", 980190962], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[34mSELECT COUNT(*) FROM "posts"[0m
+Started DELETE "/posts/980190962" for 127.0.0.1 at 2021-10-31 21:59:14 +0700
+Processing by PostsController#destroy as HTML
+  Parameters: {"id"=>"980190962"}
+  [1m[36mPost Load (0.0ms)[0m  [1m[34mSELECT "posts".* FROM "posts" WHERE "posts"."id" = ? LIMIT ?[0m  [["id", 980190962], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mPost Destroy (1.3ms)[0m  [1m[31mDELETE FROM "posts" WHERE "posts"."id" = ?[0m  [["id", 980190962]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TO SAVEPOINT active_record_1[0m
+Completed 500 Internal Server Error in 2ms (ActiveRecord: 1.4ms | Allocations: 901)
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[31mrollback transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+-----------------------------------------
+PostsControllerTest: test_should_get_edit
+-----------------------------------------
+  [1m[36mPost Load (0.0ms)[0m  [1m[34mSELECT "posts".* FROM "posts" WHERE "posts"."id" = ? LIMIT ?[0m  [["id", 980190962], ["LIMIT", 1]]
+Started GET "/posts/980190962/edit" for 127.0.0.1 at 2021-10-31 21:59:14 +0700
+Processing by PostsController#edit as HTML
+  Parameters: {"id"=>"980190962"}
+  [1m[36mPost Load (0.0ms)[0m  [1m[34mSELECT "posts".* FROM "posts" WHERE "posts"."id" = ? LIMIT ?[0m  [["id", 980190962], ["LIMIT", 1]]
+  Rendering layout layouts/application.html.haml
+  Rendering posts/edit.html.haml within layouts/application
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users"[0m
+  Rendered posts/_form.html.haml (Duration: 13.7ms | Allocations: 16809)
+  Rendered posts/edit.html.haml within layouts/application (Duration: 15.6ms | Allocations: 18476)
+[Webpacker] Everything's up-to-date. Nothing to do
+  Rendered layouts/_navigation.html.haml (Duration: 0.0ms | Allocations: 15)
+  Rendered layout layouts/application.html.haml (Duration: 17.4ms | Allocations: 20578)
+Completed 200 OK in 20ms (Views: 17.6ms | ActiveRecord: 0.1ms | Allocations: 21264)
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+----------------------------------------
+PostsControllerTest: test_should_get_new
+----------------------------------------
+  [1m[36mPost Load (0.1ms)[0m  [1m[34mSELECT "posts".* FROM "posts" WHERE "posts"."id" = ? LIMIT ?[0m  [["id", 980190962], ["LIMIT", 1]]
+Started GET "/posts/new" for 127.0.0.1 at 2021-10-31 21:59:14 +0700
+Processing by PostsController#new as HTML
+  Rendering layout layouts/application.html.haml
+  Rendering posts/new.html.haml within layouts/application
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users"[0m
+  Rendered posts/_form.html.haml (Duration: 1.7ms | Allocations: 1902)
+  Rendered posts/new.html.haml within layouts/application (Duration: 2.5ms | Allocations: 3170)
+[Webpacker] Everything's up-to-date. Nothing to do
+  Rendered layouts/_navigation.html.haml (Duration: 0.0ms | Allocations: 15)
+  Rendered layout layouts/application.html.haml (Duration: 4.3ms | Allocations: 5266)
+Completed 200 OK in 5ms (Views: 4.5ms | ActiveRecord: 0.0ms | Allocations: 5920)
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+-----------------------------------------
+UsersControllerTest: test_should_get_edit
+-----------------------------------------
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 980190962], ["LIMIT", 1]]
+Started GET "/users/980190962/edit" for 127.0.0.1 at 2021-10-31 21:59:14 +0700
+Processing by UsersController#edit as HTML
+  Parameters: {"id"=>"980190962"}
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 980190962], ["LIMIT", 1]]
+Redirected to http://www.example.com/main
+Filter chain halted as :logged_in rendered or redirected
+Completed 302 Found in 1ms (ActiveRecord: 0.1ms | Allocations: 737)
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+----------------------------------------
+UsersControllerTest: test_should_get_new
+----------------------------------------
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 980190962], ["LIMIT", 1]]
+Started GET "/users/new" for 127.0.0.1 at 2021-10-31 21:59:14 +0700
+Processing by UsersController#new as HTML
+  Rendering layout layouts/application.html.haml
+  Rendering users/new.html.haml within layouts/application
+  Rendered users/_form.html.haml (Duration: 9.5ms | Allocations: 8919)
+  Rendered users/new.html.haml within layouts/application (Duration: 10.6ms | Allocations: 10457)
+[Webpacker] Everything's up-to-date. Nothing to do
+  Rendered layouts/_navigation.html.haml (Duration: 0.0ms | Allocations: 15)
+  Rendered layout layouts/application.html.haml (Duration: 12.4ms | Allocations: 12578)
+Completed 200 OK in 14ms (Views: 13.2ms | ActiveRecord: 0.0ms | Allocations: 13665)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+--------------------------------------------
+UsersControllerTest: test_should_update_user
+--------------------------------------------
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 980190962], ["LIMIT", 1]]
+Started PATCH "/users/980190962" for 127.0.0.1 at 2021-10-31 21:59:14 +0700
+Processing by UsersController#update as HTML
+  Parameters: {"user"=>{"email"=>"MyString", "name"=>"MyString", "password_digest"=>"[FILTERED]"}, "id"=>"980190962"}
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 980190962], ["LIMIT", 1]]
+Redirected to http://www.example.com/main
+Filter chain halted as :logged_in rendered or redirected
+Completed 302 Found in 10ms (ActiveRecord: 0.0ms | Allocations: 392)
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+------------------------------------------
+UsersControllerTest: test_should_get_index
+------------------------------------------
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 980190962], ["LIMIT", 1]]
+Started GET "/users" for 127.0.0.1 at 2021-10-31 21:59:14 +0700
+Processing by UsersController#index as HTML
+Redirected to http://www.example.com/main
+Filter chain halted as :logged_in rendered or redirected
+Completed 302 Found in 0ms (ActiveRecord: 0.0ms | Allocations: 223)
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+--------------------------------------------
+UsersControllerTest: test_should_create_user
+--------------------------------------------
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 980190962], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[34mSELECT COUNT(*) FROM "users"[0m
+Started POST "/users" for 127.0.0.1 at 2021-10-31 21:59:14 +0700
+Processing by UsersController#create as HTML
+  Parameters: {"user"=>{"email"=>"MyString", "name"=>"MyString", "password_digest"=>"[FILTERED]"}}
+[31mUnpermitted parameter: :password_digest[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Exists? (0.1ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = ? LIMIT ?[0m  [["email", "MyString"], ["LIMIT", 1]]
+  [1m[36mUser Exists? (0.0ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."name" = ? LIMIT ?[0m  [["name", "MyString"], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TO SAVEPOINT active_record_1[0m
+  Rendering layout layouts/application.html.haml
+  Rendering users/new.html.haml within layouts/application
+  Rendered users/_form.html.haml (Duration: 7.1ms | Allocations: 5716)
+  Rendered users/new.html.haml within layouts/application (Duration: 7.3ms | Allocations: 5835)
+[Webpacker] Everything's up-to-date. Nothing to do
+  Rendered layouts/_navigation.html.haml (Duration: 0.0ms | Allocations: 15)
+  Rendered layout layouts/application.html.haml (Duration: 27.4ms | Allocations: 7925)
+Completed 422 Unprocessable Entity in 29ms (Views: 27.7ms | ActiveRecord: 0.2ms | Allocations: 9579)
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "users"[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+---------------------------------------------
+UsersControllerTest: test_should_destroy_user
+---------------------------------------------
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 980190962], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[34mSELECT COUNT(*) FROM "users"[0m
+Started DELETE "/users/980190962" for 127.0.0.1 at 2021-10-31 21:59:14 +0700
+Processing by UsersController#destroy as HTML
+  Parameters: {"id"=>"980190962"}
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 980190962], ["LIMIT", 1]]
+Redirected to http://www.example.com/main
+Filter chain halted as :logged_in rendered or redirected
+Completed 302 Found in 1ms (ActiveRecord: 0.0ms | Allocations: 380)
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "users"[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+------------------------------------------
+UsersControllerTest: test_should_show_user
+------------------------------------------
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 980190962], ["LIMIT", 1]]
+Started GET "/users/980190962" for 127.0.0.1 at 2021-10-31 21:59:14 +0700
+Processing by UsersController#show as HTML
+  Parameters: {"id"=>"980190962"}
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 980190962], ["LIMIT", 1]]
+Redirected to http://www.example.com/main
+Filter chain halted as :logged_in rendered or redirected
+Completed 302 Found in 1ms (ActiveRecord: 0.0ms | Allocations: 328)
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.5ms)[0m  [1m[34mSELECT sqlite_version(*)[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ?[0m  [["key", "schema_sha1"]]
+  [1m[35m (0.0ms)[0m  [1m[34mSELECT sqlite_version(*)[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[35m (0.4ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = ON[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mFixtures Load (2.6ms)[0m  [1m[31mDELETE FROM "follows";
+DELETE FROM "likes";
+DELETE FROM "posts";
+DELETE FROM "users";
+INSERT INTO "follows" ("id", "follower_id", "followee_id", "created_at", "updated_at") VALUES (980190962, 1, 1, '2021-10-31 15:03:48.277827', '2021-10-31 15:03:48.277827');
+INSERT INTO "follows" ("id", "follower_id", "followee_id", "created_at", "updated_at") VALUES (298486374, 1, 1, '2021-10-31 15:03:48.277827', '2021-10-31 15:03:48.277827');
+INSERT INTO "likes" ("id", "post_id", "likeUser", "created_at", "updated_at") VALUES (980190962, 980190962, 'MyString', '2021-10-31 15:03:48.278792', '2021-10-31 15:03:48.278792');
+INSERT INTO "likes" ("id", "post_id", "likeUser", "created_at", "updated_at") VALUES (298486374, 298486374, 'MyString', '2021-10-31 15:03:48.278792', '2021-10-31 15:03:48.278792');
+INSERT INTO "posts" ("id", "user_id", "msg", "created_at", "updated_at") VALUES (980190962, 980190962, 'MyString', '2021-10-31 15:03:48.279678', '2021-10-31 15:03:48.279678');
+INSERT INTO "posts" ("id", "user_id", "msg", "created_at", "updated_at") VALUES (298486374, 298486374, 'MyString', '2021-10-31 15:03:48.279678', '2021-10-31 15:03:48.279678');
+INSERT INTO "users" ("id", "name", "email", "password_digest", "created_at", "updated_at") VALUES (980190962, 'MyString', 'MyString', 'MyString', '2021-10-31 15:03:48.280223', '2021-10-31 15:03:48.280223');
+INSERT INTO "users" ("id", "name", "email", "password_digest", "created_at", "updated_at") VALUES (298486374, 'MyString', 'MyString', 'MyString', '2021-10-31 15:03:48.280223', '2021-10-31 15:03:48.280223')[0m
+  [1m[36mTRANSACTION (6.7ms)[0m  [1m[36mcommit transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = 0[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+--------------------------------------------
+UsersControllerTest: test_should_update_user
+--------------------------------------------
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 980190962], ["LIMIT", 1]]
+Started PATCH "/users/980190962" for 127.0.0.1 at 2021-10-31 22:03:48 +0700
+Processing by UsersController#update as HTML
+  Parameters: {"user"=>{"email"=>"MyString", "name"=>"MyString", "password_digest"=>"[FILTERED]"}, "id"=>"980190962"}
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 980190962], ["LIMIT", 1]]
+Redirected to http://www.example.com/main
+Filter chain halted as :logged_in rendered or redirected
+Completed 302 Found in 5ms (ActiveRecord: 0.1ms | Allocations: 2091)
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+--------------------------------------------
+UsersControllerTest: test_should_create_user
+--------------------------------------------
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 980190962], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[34mSELECT COUNT(*) FROM "users"[0m
+Started POST "/users" for 127.0.0.1 at 2021-10-31 22:03:48 +0700
+Processing by UsersController#create as HTML
+  Parameters: {"user"=>{"email"=>"MyString", "name"=>"MyString", "password_digest"=>"[FILTERED]"}}
+[31mUnpermitted parameter: :password_digest[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Exists? (0.1ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = ? LIMIT ?[0m  [["email", "MyString"], ["LIMIT", 1]]
+  [1m[36mUser Exists? (0.0ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."name" = ? LIMIT ?[0m  [["name", "MyString"], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK TO SAVEPOINT active_record_1[0m
+  Rendering layout layouts/application.html.haml
+  Rendering users/new.html.haml within layouts/application
+  Rendered users/_form.html.haml (Duration: 36.4ms | Allocations: 22963)
+  Rendered users/new.html.haml within layouts/application (Duration: 39.3ms | Allocations: 26475)
+[Webpacker] Everything's up-to-date. Nothing to do
+  Rendered layouts/_navigation.html.haml (Duration: 6.6ms | Allocations: 13686)
+  Rendered layout layouts/application.html.haml (Duration: 80.8ms | Allocations: 61094)
+Completed 422 Unprocessable Entity in 85ms (Views: 82.9ms | ActiveRecord: 0.2ms | Allocations: 65004)
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "users"[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+------------------------------------------
+UsersControllerTest: test_should_show_user
+------------------------------------------
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 980190962], ["LIMIT", 1]]
+Started GET "/users/980190962" for 127.0.0.1 at 2021-10-31 22:03:48 +0700
+Processing by UsersController#show as HTML
+  Parameters: {"id"=>"980190962"}
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 980190962], ["LIMIT", 1]]
+Redirected to http://www.example.com/main
+Filter chain halted as :logged_in rendered or redirected
+Completed 302 Found in 1ms (ActiveRecord: 0.0ms | Allocations: 455)
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+----------------------------------------
+UsersControllerTest: test_should_get_new
+----------------------------------------
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 980190962], ["LIMIT", 1]]
+Started GET "/users/new" for 127.0.0.1 at 2021-10-31 22:03:48 +0700
+Processing by UsersController#new as HTML
+  Rendering layout layouts/application.html.haml
+  Rendering users/new.html.haml within layouts/application
+  Rendered users/_form.html.haml (Duration: 2.5ms | Allocations: 2355)
+  Rendered users/new.html.haml within layouts/application (Duration: 2.7ms | Allocations: 2476)
+[Webpacker] Everything's up-to-date. Nothing to do
+  Rendered layouts/_navigation.html.haml (Duration: 0.0ms | Allocations: 15)
+  Rendered layout layouts/application.html.haml (Duration: 4.7ms | Allocations: 4571)
+Completed 200 OK in 5ms (Views: 5.0ms | ActiveRecord: 0.0ms | Allocations: 5038)
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+---------------------------------------------
+UsersControllerTest: test_should_destroy_user
+---------------------------------------------
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 980190962], ["LIMIT", 1]]
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "users"[0m
+Started DELETE "/users/980190962" for 127.0.0.1 at 2021-10-31 22:03:48 +0700
+Processing by UsersController#destroy as HTML
+  Parameters: {"id"=>"980190962"}
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 980190962], ["LIMIT", 1]]
+Redirected to http://www.example.com/main
+Filter chain halted as :logged_in rendered or redirected
+Completed 302 Found in 1ms (ActiveRecord: 0.1ms | Allocations: 378)
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "users"[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+-----------------------------------------
+UsersControllerTest: test_should_get_edit
+-----------------------------------------
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 980190962], ["LIMIT", 1]]
+Started GET "/users/980190962/edit" for 127.0.0.1 at 2021-10-31 22:03:48 +0700
+Processing by UsersController#edit as HTML
+  Parameters: {"id"=>"980190962"}
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 980190962], ["LIMIT", 1]]
+Redirected to http://www.example.com/main
+Filter chain halted as :logged_in rendered or redirected
+Completed 302 Found in 1ms (ActiveRecord: 0.0ms | Allocations: 328)
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+------------------------------------------
+UsersControllerTest: test_should_get_index
+------------------------------------------
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 980190962], ["LIMIT", 1]]
+Started GET "/users" for 127.0.0.1 at 2021-10-31 22:03:48 +0700
+Processing by UsersController#index as HTML
+Redirected to http://www.example.com/main
+Filter chain halted as :logged_in rendered or redirected
+Completed 302 Found in 0ms (ActiveRecord: 0.0ms | Allocations: 223)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.4ms)[0m  [1m[34mSELECT sqlite_version(*)[0m
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ?[0m  [["key", "schema_sha1"]]
+  [1m[35m (0.0ms)[0m  [1m[34mSELECT sqlite_version(*)[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[35m (2.8ms)[0m  [1m[34mSELECT sqlite_version(*)[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ?[0m  [["key", "schema_sha1"]]
+  [1m[35m (0.0ms)[0m  [1m[34mSELECT sqlite_version(*)[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT sqlite_version(*)[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ?[0m  [["key", "schema_sha1"]]
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT sqlite_version(*)[0m
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT sqlite_version(*)[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ?[0m  [["key", "schema_sha1"]]
+  [1m[35m (0.0ms)[0m  [1m[34mSELECT sqlite_version(*)[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[35m (0.5ms)[0m  [1m[34mSELECT sqlite_version(*)[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ?[0m  [["key", "schema_sha1"]]
+  [1m[35m (0.0ms)[0m  [1m[34mSELECT sqlite_version(*)[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT sqlite_version(*)[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ?[0m  [["key", "schema_sha1"]]
+  [1m[35m (0.0ms)[0m  [1m[34mSELECT sqlite_version(*)[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = ON[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mFixtures Load (6.1ms)[0m  [1m[31mDELETE FROM "follows";
+DELETE FROM "likes";
+DELETE FROM "posts";
+DELETE FROM "users";
+INSERT INTO "follows" ("id", "follower_id", "followee_id", "created_at", "updated_at") VALUES (980190962, 1, 1, '2021-10-31 15:38:22.718993', '2021-10-31 15:38:22.718993');
+INSERT INTO "follows" ("id", "follower_id", "followee_id", "created_at", "updated_at") VALUES (298486374, 1, 1, '2021-10-31 15:38:22.718993', '2021-10-31 15:38:22.718993');
+INSERT INTO "follows" ("id", "follower_id", "followee_id", "created_at", "updated_at") VALUES (692219080, 101, 102, '2021-10-31 15:38:22.718993', '2021-10-31 15:38:22.718993');
+INSERT INTO "likes" ("id", "post_id", "likeUser", "created_at", "updated_at") VALUES (980190962, 980190962, 'MyString', '2021-10-31 15:38:22.720174', '2021-10-31 15:38:22.720174');
+INSERT INTO "likes" ("id", "post_id", "likeUser", "created_at", "updated_at") VALUES (298486374, 298486374, 'MyString', '2021-10-31 15:38:22.720174', '2021-10-31 15:38:22.720174');
+INSERT INTO "posts" ("id", "user_id", "msg", "created_at", "updated_at") VALUES (980190962, 980190962, 'MyString', '2021-10-31 15:38:22.726324', '2021-10-31 15:38:22.726324');
+INSERT INTO "posts" ("id", "user_id", "msg", "created_at", "updated_at") VALUES (298486374, 298486374, 'MyString', '2021-10-31 15:38:22.726324', '2021-10-31 15:38:22.726324');
+INSERT INTO "posts" ("id", "user_id", "created_at", "updated_at") VALUES (101, 102, '2021-10-31 15:38:22.726324', '2021-10-31 15:38:22.726324');
+INSERT INTO "posts" ("id", "user_id", "created_at", "updated_at") VALUES (102, 102, '2021-10-31 15:38:22.726324', '2021-10-31 15:38:22.726324');
+INSERT INTO "users" ("id", "name", "email", "password_digest", "created_at", "updated_at") VALUES (980190962, 'MyString', 'MyString', 'MyString', '2021-10-31 15:38:22.727010', '2021-10-31 15:38:22.727010');
+INSERT INTO "users" ("id", "name", "email", "password_digest", "created_at", "updated_at") VALUES (298486374, 'MyString', 'MyString', 'MyString', '2021-10-31 15:38:22.727010', '2021-10-31 15:38:22.727010');
+INSERT INTO "users" ("id", "name", "email", "password_digest", "created_at", "updated_at") VALUES (101, 'u1', 'u1', '$2a$04$cvZLc6pEcMpGv3u9JCburOVEphHGx3GBpB2UB38ioWTxWik45BgH6', '2021-10-31 15:38:22.727010', '2021-10-31 15:38:22.727010');
+INSERT INTO "users" ("id", "name", "email", "password_digest", "created_at", "updated_at") VALUES (102, 'u2', 'u2', '$2a$04$4Ikp/k/BzlWuW6aQML.p1ujTIRz692RbLY9c0R7DQIF7e9w/e7afq', '2021-10-31 15:38:22.727010', '2021-10-31 15:38:22.727010')[0m
+  [1m[36mTRANSACTION (12.3ms)[0m  [1m[36mcommit transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[35mPRAGMA defer_foreign_keys = 0[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+--------------------------------
+MainTest: test_login_wrong_email
+--------------------------------
+Started GET "/main" for 127.0.0.1 at 2021-10-31 22:38:26 +0700
+Processing by UsersController#login_page as HTML
+  Rendering layout layouts/application.html.haml
+  Rendering users/login_page.html.haml within layouts/application
+  Rendered users/login_page.html.haml within layouts/application (Duration: 152.1ms | Allocations: 18700)
+[Webpacker] Everything's up-to-date. Nothing to do
+  Rendered layouts/_navigation.html.haml (Duration: 9.9ms | Allocations: 13662)
+  Rendered layout layouts/application.html.haml (Duration: 210.6ms | Allocations: 53388)
+Completed 200 OK in 236ms (Views: 212.0ms | ActiveRecord: 0.0ms | Allocations: 59526)
+Started GET "/assets/application-04c3ae28f07e1bf734223bf526d0cdd296440ef53bcb3f80b9f093c6bf02f747.css" for 127.0.0.1 at 2021-10-31 22:38:26 +0700
+Started POST "/main" for 127.0.0.1 at 2021-10-31 22:38:28 +0700
+Processing by UsersController#recieve_login_info as HTML
+  Parameters: {"user"=>{"email"=>"xxx", "password"=>"[FILTERED]"}, "commit"=>"Login"}
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."email" = ? LIMIT ?[0m  [["email", "xxx"], ["LIMIT", 1]]
+Redirected to http://127.0.0.1:33167/main
+Completed 302 Found in 1ms (ActiveRecord: 0.1ms | Allocations: 1049)
+Started GET "/main" for 127.0.0.1 at 2021-10-31 22:38:28 +0700
+Processing by UsersController#login_page as HTML
+  Rendering layout layouts/application.html.haml
+  Rendering users/login_page.html.haml within layouts/application
+  Rendered users/login_page.html.haml within layouts/application (Duration: 2.0ms | Allocations: 1623)
+[Webpacker] Everything's up-to-date. Nothing to do
+  Rendered layouts/_navigation.html.haml (Duration: 0.0ms | Allocations: 18)
+  Rendered layout layouts/application.html.haml (Duration: 72.0ms | Allocations: 3751)
+Completed 200 OK in 110ms (Views: 72.8ms | ActiveRecord: 0.0ms | Allocations: 4309)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+-----------------------------------
+MainTest: test_login_wrong_password
+-----------------------------------
+Started GET "/main" for 127.0.0.1 at 2021-10-31 22:38:28 +0700
+Processing by UsersController#login_page as HTML
+  Rendering layout layouts/application.html.haml
+  Rendering users/login_page.html.haml within layouts/application
+  Rendered users/login_page.html.haml within layouts/application (Duration: 1.5ms | Allocations: 1618)
+[Webpacker] Everything's up-to-date. Nothing to do
+  Rendered layouts/_navigation.html.haml (Duration: 0.1ms | Allocations: 18)
+  Rendered layout layouts/application.html.haml (Duration: 102.7ms | Allocations: 3780)
+Completed 200 OK in 103ms (Views: 103.0ms | ActiveRecord: 0.0ms | Allocations: 4284)
+Started POST "/main" for 127.0.0.1 at 2021-10-31 22:38:29 +0700
+Processing by UsersController#recieve_login_info as HTML
+  Parameters: {"user"=>{"email"=>"test", "password"=>"[FILTERED]"}, "commit"=>"Login"}
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."email" = ? LIMIT ?[0m  [["email", "test"], ["LIMIT", 1]]
+Redirected to http://127.0.0.1:33167/main
+Completed 302 Found in 1ms (ActiveRecord: 0.1ms | Allocations: 516)
+Started GET "/main" for 127.0.0.1 at 2021-10-31 22:38:29 +0700
+Processing by UsersController#login_page as HTML
+  Rendering layout layouts/application.html.haml
+  Rendering users/login_page.html.haml within layouts/application
+  Rendered users/login_page.html.haml within layouts/application (Duration: 26.9ms | Allocations: 1620)
+[Webpacker] Everything's up-to-date. Nothing to do
+  Rendered layouts/_navigation.html.haml (Duration: 0.0ms | Allocations: 18)
+  Rendered layout layouts/application.html.haml (Duration: 29.2ms | Allocations: 3748)
+Completed 200 OK in 30ms (Views: 29.4ms | ActiveRecord: 0.0ms | Allocations: 4298)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+----------------------------
+MainTest: test_login_success
+----------------------------
+Started GET "/main" for 127.0.0.1 at 2021-10-31 22:38:29 +0700
+Processing by UsersController#login_page as HTML
+  Rendering layout layouts/application.html.haml
+  Rendering users/login_page.html.haml within layouts/application
+  Rendered users/login_page.html.haml within layouts/application (Duration: 1.6ms | Allocations: 1618)
+[Webpacker] Everything's up-to-date. Nothing to do
+  Rendered layouts/_navigation.html.haml (Duration: 0.1ms | Allocations: 18)
+  Rendered layout layouts/application.html.haml (Duration: 28.9ms | Allocations: 3746)
+Completed 200 OK in 30ms (Views: 29.2ms | ActiveRecord: 0.0ms | Allocations: 4235)
+Started POST "/main" for 127.0.0.1 at 2021-10-31 22:38:30 +0700
+Processing by UsersController#recieve_login_info as HTML
+  Parameters: {"user"=>{"email"=>"test", "password"=>"[FILTERED]"}, "commit"=>"Login"}
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."email" = ? LIMIT ?[0m  [["email", "test"], ["LIMIT", 1]]
+Redirected to http://127.0.0.1:33167/main
+Completed 302 Found in 1ms (ActiveRecord: 0.1ms | Allocations: 524)
+Started GET "/main" for 127.0.0.1 at 2021-10-31 22:38:30 +0700
+Processing by UsersController#login_page as HTML
+  Rendering layout layouts/application.html.haml
+  Rendering users/login_page.html.haml within layouts/application
+  Rendered users/login_page.html.haml within layouts/application (Duration: 1.5ms | Allocations: 1620)
+[Webpacker] Everything's up-to-date. Nothing to do
+  Rendered layouts/_navigation.html.haml (Duration: 0.0ms | Allocations: 18)
+  Rendered layout layouts/application.html.haml (Duration: 3.5ms | Allocations: 3748)
+Completed 200 OK in 4ms (Views: 3.8ms | ActiveRecord: 0.0ms | Allocations: 4286)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT sqlite_version(*)[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ?[0m  [["key", "schema_sha1"]]
+  [1m[35m (0.0ms)[0m  [1m[34mSELECT sqlite_version(*)[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = ON[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mFixtures Load (2.7ms)[0m  [1m[31mDELETE FROM "follows";
+DELETE FROM "likes";
+DELETE FROM "posts";
+DELETE FROM "users";
+INSERT INTO "follows" ("id", "follower_id", "followee_id", "created_at", "updated_at") VALUES (980190962, 1, 1, '2021-10-31 15:39:29.306128', '2021-10-31 15:39:29.306128');
+INSERT INTO "follows" ("id", "follower_id", "followee_id", "created_at", "updated_at") VALUES (298486374, 1, 1, '2021-10-31 15:39:29.306128', '2021-10-31 15:39:29.306128');
+INSERT INTO "follows" ("id", "follower_id", "followee_id", "created_at", "updated_at") VALUES (692219080, 101, 102, '2021-10-31 15:39:29.306128', '2021-10-31 15:39:29.306128');
+INSERT INTO "likes" ("id", "post_id", "likeUser", "created_at", "updated_at") VALUES (980190962, 980190962, 'MyString', '2021-10-31 15:39:29.307084', '2021-10-31 15:39:29.307084');
+INSERT INTO "likes" ("id", "post_id", "likeUser", "created_at", "updated_at") VALUES (298486374, 298486374, 'MyString', '2021-10-31 15:39:29.307084', '2021-10-31 15:39:29.307084');
+INSERT INTO "posts" ("id", "user_id", "msg", "created_at", "updated_at") VALUES (980190962, 980190962, 'MyString', '2021-10-31 15:39:29.307687', '2021-10-31 15:39:29.307687');
+INSERT INTO "posts" ("id", "user_id", "msg", "created_at", "updated_at") VALUES (298486374, 298486374, 'MyString', '2021-10-31 15:39:29.307687', '2021-10-31 15:39:29.307687');
+INSERT INTO "posts" ("id", "user_id", "created_at", "updated_at") VALUES (101, 102, '2021-10-31 15:39:29.307687', '2021-10-31 15:39:29.307687');
+INSERT INTO "posts" ("id", "user_id", "created_at", "updated_at") VALUES (102, 102, '2021-10-31 15:39:29.307687', '2021-10-31 15:39:29.307687');
+INSERT INTO "users" ("id", "name", "email", "password_digest", "created_at", "updated_at") VALUES (980190962, 'MyString', 'MyString', 'MyString', '2021-10-31 15:39:29.312655', '2021-10-31 15:39:29.312655');
+INSERT INTO "users" ("id", "name", "email", "password_digest", "created_at", "updated_at") VALUES (298486374, 'MyString', 'MyString', 'MyString', '2021-10-31 15:39:29.312655', '2021-10-31 15:39:29.312655');
+INSERT INTO "users" ("id", "name", "email", "password_digest", "created_at", "updated_at") VALUES (101, 'u1', 'u1', '$2a$04$KDzdn9J.xwanIL1jGRsV1.i2O99aO49juXSa5bvk.J.enFs/HPvbG', '2021-10-31 15:39:29.312655', '2021-10-31 15:39:29.312655');
+INSERT INTO "users" ("id", "name", "email", "password_digest", "created_at", "updated_at") VALUES (102, 'u2', 'u2', '$2a$04$vdy.SEYxaA/sjC7ruSq3UuICgByI0vWovc.kKiQqa9wPDzFB02r6i', '2021-10-31 15:39:29.312655', '2021-10-31 15:39:29.312655')[0m
+  [1m[36mTRANSACTION (10.3ms)[0m  [1m[36mcommit transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[35mPRAGMA defer_foreign_keys = 0[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+--------------------------------
+MainTest: test_login_wrong_email
+--------------------------------
+Started GET "/main" for 127.0.0.1 at 2021-10-31 22:39:32 +0700
+Processing by UsersController#login_page as HTML
+  Rendering layout layouts/application.html.haml
+  Rendering users/login_page.html.haml within layouts/application
+  Rendered users/login_page.html.haml within layouts/application (Duration: 25.7ms | Allocations: 18701)
+[Webpacker] Everything's up-to-date. Nothing to do
+  Rendered layouts/_navigation.html.haml (Duration: 5.7ms | Allocations: 13667)
+  Rendered layout layouts/application.html.haml (Duration: 236.0ms | Allocations: 53453)
+Completed 200 OK in 250ms (Views: 237.4ms | ActiveRecord: 0.0ms | Allocations: 59592)
+Started GET "/assets/application-04c3ae28f07e1bf734223bf526d0cdd296440ef53bcb3f80b9f093c6bf02f747.css" for 127.0.0.1 at 2021-10-31 22:39:32 +0700
+Started POST "/main" for 127.0.0.1 at 2021-10-31 22:39:34 +0700
+Processing by UsersController#recieve_login_info as HTML
+  Parameters: {"user"=>{"email"=>"u", "password"=>"[FILTERED]"}, "commit"=>"Login"}
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."email" = ? LIMIT ?[0m  [["email", "u"], ["LIMIT", 1]]
+Redirected to http://127.0.0.1:38971/main
+Completed 302 Found in 2ms (ActiveRecord: 0.2ms | Allocations: 1039)
+Started GET "/main" for 127.0.0.1 at 2021-10-31 22:39:34 +0700
+Processing by UsersController#login_page as HTML
+  Rendering layout layouts/application.html.haml
+  Rendering users/login_page.html.haml within layouts/application
+  Rendered users/login_page.html.haml within layouts/application (Duration: 30.6ms | Allocations: 1631)
+[Webpacker] Everything's up-to-date. Nothing to do
+  Rendered layouts/_navigation.html.haml (Duration: 0.0ms | Allocations: 18)
+  Rendered layout layouts/application.html.haml (Duration: 32.6ms | Allocations: 3759)
+Completed 200 OK in 57ms (Views: 56.2ms | ActiveRecord: 0.0ms | Allocations: 4317)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+-----------------------------------
+MainTest: test_login_wrong_password
+-----------------------------------
+Started GET "/main" for 127.0.0.1 at 2021-10-31 22:39:35 +0700
+Processing by UsersController#login_page as HTML
+  Rendering layout layouts/application.html.haml
+  Rendering users/login_page.html.haml within layouts/application
+  Rendered users/login_page.html.haml within layouts/application (Duration: 1.5ms | Allocations: 1618)
+[Webpacker] Everything's up-to-date. Nothing to do
+  Rendered layouts/_navigation.html.haml (Duration: 0.0ms | Allocations: 18)
+  Rendered layout layouts/application.html.haml (Duration: 35.5ms | Allocations: 3765)
+Completed 200 OK in 50ms (Views: 50.0ms | ActiveRecord: 0.0ms | Allocations: 4254)
+Started POST "/main" for 127.0.0.1 at 2021-10-31 22:39:35 +0700
+Processing by UsersController#recieve_login_info as HTML
+  Parameters: {"user"=>{"email"=>"u1", "password"=>"[FILTERED]"}, "commit"=>"Login"}
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."email" = ? LIMIT ?[0m  [["email", "u1"], ["LIMIT", 1]]
+Redirected to http://127.0.0.1:38971/main
+Completed 302 Found in 2ms (ActiveRecord: 0.1ms | Allocations: 619)
+Started GET "/main" for 127.0.0.1 at 2021-10-31 22:39:35 +0700
+Processing by UsersController#login_page as HTML
+  Rendering layout layouts/application.html.haml
+  Rendering users/login_page.html.haml within layouts/application
+  Rendered users/login_page.html.haml within layouts/application (Duration: 1.6ms | Allocations: 1620)
+[Webpacker] Everything's up-to-date. Nothing to do
+  Rendered layouts/_navigation.html.haml (Duration: 0.1ms | Allocations: 18)
+  Rendered layout layouts/application.html.haml (Duration: 60.0ms | Allocations: 3750)
+Completed 200 OK in 61ms (Views: 60.3ms | ActiveRecord: 0.0ms | Allocations: 4289)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mbegin transaction[0m
+----------------------------
+MainTest: test_login_success
+----------------------------
+Started GET "/main" for 127.0.0.1 at 2021-10-31 22:39:36 +0700
+Processing by UsersController#login_page as HTML
+  Rendering layout layouts/application.html.haml
+  Rendering users/login_page.html.haml within layouts/application
+  Rendered users/login_page.html.haml within layouts/application (Duration: 25.4ms | Allocations: 1618)
+[Webpacker] Everything's up-to-date. Nothing to do
+  Rendered layouts/_navigation.html.haml (Duration: 0.1ms | Allocations: 18)
+  Rendered layout layouts/application.html.haml (Duration: 27.8ms | Allocations: 3746)
+Completed 200 OK in 29ms (Views: 28.1ms | ActiveRecord: 0.0ms | Allocations: 4235)
+Started POST "/main" for 127.0.0.1 at 2021-10-31 22:39:36 +0700
+Processing by UsersController#recieve_login_info as HTML
+  Parameters: {"user"=>{"email"=>"u1", "password"=>"[FILTERED]"}, "commit"=>"Login"}
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."email" = ? LIMIT ?[0m  [["email", "u1"], ["LIMIT", 1]]
+Redirected to http://127.0.0.1:38971/feed
+Completed 302 Found in 2ms (ActiveRecord: 0.1ms | Allocations: 563)
+Started GET "/feed" for 127.0.0.1 at 2021-10-31 22:39:36 +0700
+Processing by UsersController#feed as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 101], ["LIMIT", 1]]
+  [1m[36mCACHE User Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 101], ["LIMIT", 1]]
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" INNER JOIN "follows" ON "users"."id" = "follows"."followee_id" WHERE "follows"."follower_id" = ?[0m  [["follower_id", 101]]
+  [1m[36mPost Load (0.1ms)[0m  [1m[34mSELECT "posts".* FROM "posts" WHERE "posts"."user_id" = ?[0m  [["user_id", 102]]
+  Rendering layout layouts/application.html.haml
+  Rendering users/feed.html.haml within layouts/application
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 102], ["LIMIT", 1]]
+  [1m[36mLike Load (0.1ms)[0m  [1m[34mSELECT "likes".* FROM "likes" WHERE "likes"."post_id" = ?[0m  [["post_id", 101]]
+  Rendered users/_likeModal.html.haml (Duration: 18.3ms | Allocations: 7431)
+  [1m[36mLike Load (0.1ms)[0m  [1m[34mSELECT "likes".* FROM "likes" WHERE "likes"."post_id" = ? AND "likes"."likeUser" = ? LIMIT ?[0m  [["post_id", 101], ["likeUser", "101"], ["LIMIT", 1]]
+  [1m[36mCACHE User Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 102], ["LIMIT", 1]]
+  [1m[36mLike Load (0.0ms)[0m  [1m[34mSELECT "likes".* FROM "likes" WHERE "likes"."post_id" = ?[0m  [["post_id", 102]]
+  Rendered users/_likeModal.html.haml (Duration: 0.3ms | Allocations: 223)
+  [1m[36mLike Load (0.0ms)[0m  [1m[34mSELECT "likes".* FROM "likes" WHERE "likes"."post_id" = ? AND "likes"."likeUser" = ? LIMIT ?[0m  [["post_id", 102], ["likeUser", "101"], ["LIMIT", 1]]
+  Rendered users/feed.html.haml within layouts/application (Duration: 23.8ms | Allocations: 15154)
+[Webpacker] Everything's up-to-date. Nothing to do
+  Rendered layouts/_navigation.html.haml (Duration: 0.0ms | Allocations: 15)
+  Rendered layout layouts/application.html.haml (Duration: 26.0ms | Allocations: 17251)
+Completed 200 OK in 70ms (Views: 26.1ms | ActiveRecord: 0.6ms | Allocations: 26093)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.4ms)[0m  [1m[34mSELECT sqlite_version(*)[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ?[0m  [["key", "schema_sha1"]]
+  [1m[35m (0.0ms)[0m  [1m[34mSELECT sqlite_version(*)[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = ON[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mFixtures Load (4.8ms)[0m  [1m[31mDELETE FROM "follows";
+DELETE FROM "likes";
+DELETE FROM "posts";
+DELETE FROM "users";
+INSERT INTO "follows" ("id", "follower_id", "followee_id", "created_at", "updated_at") VALUES (980190962, 1, 1, '2021-10-31 15:40:55.408907', '2021-10-31 15:40:55.408907');
+INSERT INTO "follows" ("id", "follower_id", "followee_id", "created_at", "updated_at") VALUES (298486374, 1, 1, '2021-10-31 15:40:55.408907', '2021-10-31 15:40:55.408907');
+INSERT INTO "follows" ("id", "follower_id", "followee_id", "created_at", "updated_at") VALUES (692219080, 101, 102, '2021-10-31 15:40:55.408907', '2021-10-31 15:40:55.408907');
+INSERT INTO "likes" ("id", "post_id", "likeUser", "created_at", "updated_at") VALUES (980190962, 980190962, 'MyString', '2021-10-31 15:40:55.409969', '2021-10-31 15:40:55.409969');
+INSERT INTO "likes" ("id", "post_id", "likeUser", "created_at", "updated_at") VALUES (298486374, 298486374, 'MyString', '2021-10-31 15:40:55.409969', '2021-10-31 15:40:55.409969');
+INSERT INTO "posts" ("id", "user_id", "msg", "created_at", "updated_at") VALUES (980190962, 980190962, 'MyString', '2021-10-31 15:40:55.410575', '2021-10-31 15:40:55.410575');
+INSERT INTO "posts" ("id", "user_id", "msg", "created_at", "updated_at") VALUES (298486374, 298486374, 'MyString', '2021-10-31 15:40:55.410575', '2021-10-31 15:40:55.410575');
+INSERT INTO "posts" ("id", "user_id", "created_at", "updated_at") VALUES (101, 102, '2021-10-31 15:40:55.410575', '2021-10-31 15:40:55.410575');
+INSERT INTO "posts" ("id", "user_id", "created_at", "updated_at") VALUES (102, 102, '2021-10-31 15:40:55.410575', '2021-10-31 15:40:55.410575');
+INSERT INTO "users" ("id", "name", "email", "password_digest", "created_at", "updated_at") VALUES (980190962, 'MyString', 'MyString', 'MyString', '2021-10-31 15:40:55.411338', '2021-10-31 15:40:55.411338');
+INSERT INTO "users" ("id", "name", "email", "password_digest", "created_at", "updated_at") VALUES (298486374, 'MyString', 'MyString', 'MyString', '2021-10-31 15:40:55.411338', '2021-10-31 15:40:55.411338');
+INSERT INTO "users" ("id", "name", "email", "password_digest", "created_at", "updated_at") VALUES (101, 'u1', 'u1', '$2a$04$Qc58PL.N4Jvaiwo8ILamjuStnHVTzVtDCxpy00EUv3jna/iBXqKQm', '2021-10-31 15:40:55.411338', '2021-10-31 15:40:55.411338');
+INSERT INTO "users" ("id", "name", "email", "password_digest", "created_at", "updated_at") VALUES (102, 'u2', 'u2', '$2a$04$qUhHnYATA4bVEiHjWaEzR.3X2ZHDi6Td/p4yM4cFarKG0TjqRfNMm', '2021-10-31 15:40:55.411338', '2021-10-31 15:40:55.411338')[0m
+  [1m[36mTRANSACTION (24.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[35mPRAGMA defer_foreign_keys = 0[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+----------------------------
+MainTest: test_login_success
+----------------------------
+Started GET "/main" for 127.0.0.1 at 2021-10-31 22:40:58 +0700
+Processing by UsersController#login_page as HTML
+  Rendering layout layouts/application.html.haml
+  Rendering users/login_page.html.haml within layouts/application
+  Rendered users/login_page.html.haml within layouts/application (Duration: 24.9ms | Allocations: 18701)
+[Webpacker] Everything's up-to-date. Nothing to do
+  Rendered layouts/_navigation.html.haml (Duration: 6.0ms | Allocations: 13672)
+  Rendered layout layouts/application.html.haml (Duration: 144.5ms | Allocations: 53519)
+Completed 200 OK in 156ms (Views: 147.2ms | ActiveRecord: 0.0ms | Allocations: 59659)
+Started GET "/assets/application-04c3ae28f07e1bf734223bf526d0cdd296440ef53bcb3f80b9f093c6bf02f747.css" for 127.0.0.1 at 2021-10-31 22:40:59 +0700
+Started POST "/main" for 127.0.0.1 at 2021-10-31 22:41:00 +0700
+Processing by UsersController#recieve_login_info as HTML
+  Parameters: {"user"=>{"email"=>"u1", "password"=>"[FILTERED]"}, "commit"=>"Login"}
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."email" = ? LIMIT ?[0m  [["email", "u1"], ["LIMIT", 1]]
+Redirected to http://127.0.0.1:34275/feed
+Completed 302 Found in 2ms (ActiveRecord: 0.2ms | Allocations: 1135)
+Started GET "/feed" for 127.0.0.1 at 2021-10-31 22:41:00 +0700
+Processing by UsersController#feed as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 101], ["LIMIT", 1]]
+  [1m[36mCACHE User Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 101], ["LIMIT", 1]]
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" INNER JOIN "follows" ON "users"."id" = "follows"."followee_id" WHERE "follows"."follower_id" = ?[0m  [["follower_id", 101]]
+  [1m[36mPost Load (0.1ms)[0m  [1m[34mSELECT "posts".* FROM "posts" WHERE "posts"."user_id" = ?[0m  [["user_id", 102]]
+  Rendering layout layouts/application.html.haml
+  Rendering users/feed.html.haml within layouts/application
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 102], ["LIMIT", 1]]
+  [1m[36mLike Load (0.1ms)[0m  [1m[34mSELECT "likes".* FROM "likes" WHERE "likes"."post_id" = ?[0m  [["post_id", 101]]
+  Rendered users/_likeModal.html.haml (Duration: 30.5ms | Allocations: 7431)
+  [1m[36mLike Load (0.1ms)[0m  [1m[34mSELECT "likes".* FROM "likes" WHERE "likes"."post_id" = ? AND "likes"."likeUser" = ? LIMIT ?[0m  [["post_id", 101], ["likeUser", "101"], ["LIMIT", 1]]
+  [1m[36mCACHE User Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 102], ["LIMIT", 1]]
+  [1m[36mLike Load (0.0ms)[0m  [1m[34mSELECT "likes".* FROM "likes" WHERE "likes"."post_id" = ?[0m  [["post_id", 102]]
+  Rendered users/_likeModal.html.haml (Duration: 0.3ms | Allocations: 223)
+  [1m[36mLike Load (0.0ms)[0m  [1m[34mSELECT "likes".* FROM "likes" WHERE "likes"."post_id" = ? AND "likes"."likeUser" = ? LIMIT ?[0m  [["post_id", 102], ["likeUser", "101"], ["LIMIT", 1]]
+  Rendered users/feed.html.haml within layouts/application (Duration: 35.8ms | Allocations: 15156)
+[Webpacker] Everything's up-to-date. Nothing to do
+  Rendered layouts/_navigation.html.haml (Duration: 0.0ms | Allocations: 15)
+  Rendered layout layouts/application.html.haml (Duration: 38.4ms | Allocations: 17254)
+Completed 200 OK in 82ms (Views: 38.4ms | ActiveRecord: 0.6ms | Allocations: 26043)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+-----------------------------------
+MainTest: test_login_wrong_password
+-----------------------------------
+Started GET "/main" for 127.0.0.1 at 2021-10-31 22:41:01 +0700
+Processing by UsersController#login_page as HTML
+  Rendering layout layouts/application.html.haml
+  Rendering users/login_page.html.haml within layouts/application
+  Rendered users/login_page.html.haml within layouts/application (Duration: 1.7ms | Allocations: 1625)
+[Webpacker] Everything's up-to-date. Nothing to do
+  Rendered layouts/_navigation.html.haml (Duration: 0.0ms | Allocations: 18)
+  Rendered layout layouts/application.html.haml (Duration: 23.5ms | Allocations: 3772)
+Completed 200 OK in 24ms (Views: 23.8ms | ActiveRecord: 0.0ms | Allocations: 4257)
+Started POST "/main" for 127.0.0.1 at 2021-10-31 22:41:02 +0700
+Processing by UsersController#recieve_login_info as HTML
+  Parameters: {"user"=>{"email"=>"u1", "password"=>"[FILTERED]"}, "commit"=>"Login"}
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."email" = ? LIMIT ?[0m  [["email", "u1"], ["LIMIT", 1]]
+Redirected to http://127.0.0.1:34275/main
+Completed 302 Found in 2ms (ActiveRecord: 0.1ms | Allocations: 578)
+Started GET "/main" for 127.0.0.1 at 2021-10-31 22:41:02 +0700
+Processing by UsersController#login_page as HTML
+  Rendering layout layouts/application.html.haml
+  Rendering users/login_page.html.haml within layouts/application
+  Rendered users/login_page.html.haml within layouts/application (Duration: 1.5ms | Allocations: 1620)
+[Webpacker] Everything's up-to-date. Nothing to do
+  Rendered layouts/_navigation.html.haml (Duration: 0.0ms | Allocations: 18)
+  Rendered layout layouts/application.html.haml (Duration: 3.4ms | Allocations: 3750)
+Completed 200 OK in 4ms (Views: 3.6ms | ActiveRecord: 0.0ms | Allocations: 4313)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mbegin transaction[0m
+--------------------------------
+MainTest: test_login_wrong_email
+--------------------------------
+Started GET "/main" for 127.0.0.1 at 2021-10-31 22:41:02 +0700
+Processing by UsersController#login_page as HTML
+  Rendering layout layouts/application.html.haml
+  Rendering users/login_page.html.haml within layouts/application
+  Rendered users/login_page.html.haml within layouts/application (Duration: 1.5ms | Allocations: 1618)
+[Webpacker] Everything's up-to-date. Nothing to do
+  Rendered layouts/_navigation.html.haml (Duration: 0.1ms | Allocations: 18)
+  Rendered layout layouts/application.html.haml (Duration: 40.2ms | Allocations: 3746)
+Completed 200 OK in 41ms (Views: 40.5ms | ActiveRecord: 0.0ms | Allocations: 4235)
+Started POST "/main" for 127.0.0.1 at 2021-10-31 22:41:03 +0700
+Processing by UsersController#recieve_login_info as HTML
+  Parameters: {"user"=>{"email"=>"u", "password"=>"[FILTERED]"}, "commit"=>"Login"}
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."email" = ? LIMIT ?[0m  [["email", "u"], ["LIMIT", 1]]
+Redirected to http://127.0.0.1:34275/main
+Completed 302 Found in 1ms (ActiveRecord: 0.1ms | Allocations: 520)
+Started GET "/main" for 127.0.0.1 at 2021-10-31 22:41:03 +0700
+Processing by UsersController#login_page as HTML
+  Rendering layout layouts/application.html.haml
+  Rendering users/login_page.html.haml within layouts/application
+  Rendered users/login_page.html.haml within layouts/application (Duration: 1.6ms | Allocations: 1620)
+[Webpacker] Everything's up-to-date. Nothing to do
+  Rendered layouts/_navigation.html.haml (Duration: 0.0ms | Allocations: 18)
+  Rendered layout layouts/application.html.haml (Duration: 3.6ms | Allocations: 3748)
+Completed 200 OK in 4ms (Views: 3.9ms | ActiveRecord: 0.0ms | Allocations: 4292)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT sqlite_version(*)[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ?[0m  [["key", "schema_sha1"]]
+  [1m[35m (0.0ms)[0m  [1m[34mSELECT sqlite_version(*)[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = ON[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mFixtures Load (2.7ms)[0m  [1m[31mDELETE FROM "follows";
+DELETE FROM "likes";
+DELETE FROM "posts";
+DELETE FROM "users";
+INSERT INTO "follows" ("id", "follower_id", "followee_id", "created_at", "updated_at") VALUES (980190962, 1, 1, '2021-10-31 15:44:16.323903', '2021-10-31 15:44:16.323903');
+INSERT INTO "follows" ("id", "follower_id", "followee_id", "created_at", "updated_at") VALUES (298486374, 1, 1, '2021-10-31 15:44:16.323903', '2021-10-31 15:44:16.323903');
+INSERT INTO "follows" ("id", "follower_id", "followee_id", "created_at", "updated_at") VALUES (692219080, 101, 102, '2021-10-31 15:44:16.323903', '2021-10-31 15:44:16.323903');
+INSERT INTO "likes" ("id", "post_id", "likeUser", "created_at", "updated_at") VALUES (980190962, 980190962, 'MyString', '2021-10-31 15:44:16.324900', '2021-10-31 15:44:16.324900');
+INSERT INTO "likes" ("id", "post_id", "likeUser", "created_at", "updated_at") VALUES (298486374, 298486374, 'MyString', '2021-10-31 15:44:16.324900', '2021-10-31 15:44:16.324900');
+INSERT INTO "posts" ("id", "user_id", "msg", "created_at", "updated_at") VALUES (980190962, 980190962, 'MyString', '2021-10-31 15:44:16.325779', '2021-10-31 15:44:16.325779');
+INSERT INTO "posts" ("id", "user_id", "msg", "created_at", "updated_at") VALUES (298486374, 298486374, 'MyString', '2021-10-31 15:44:16.325779', '2021-10-31 15:44:16.325779');
+INSERT INTO "posts" ("id", "user_id", "created_at", "updated_at") VALUES (101, 102, '2021-10-31 15:44:16.325779', '2021-10-31 15:44:16.325779');
+INSERT INTO "posts" ("id", "user_id", "created_at", "updated_at") VALUES (102, 102, '2021-10-31 15:44:16.325779', '2021-10-31 15:44:16.325779');
+INSERT INTO "users" ("id", "name", "email", "password_digest", "created_at", "updated_at") VALUES (980190962, 'MyString', 'MyString', 'MyString', '2021-10-31 15:44:16.326395', '2021-10-31 15:44:16.326395');
+INSERT INTO "users" ("id", "name", "email", "password_digest", "created_at", "updated_at") VALUES (298486374, 'MyString', 'MyString', 'MyString', '2021-10-31 15:44:16.326395', '2021-10-31 15:44:16.326395');
+INSERT INTO "users" ("id", "name", "email", "password_digest", "created_at", "updated_at") VALUES (101, 'u1', 'u1', '$2a$04$AA.Yz5A.T6Eb/SJ9u.iauOBIioq7fUWPDmdjXDyFpDZYKl1vLfhAW', '2021-10-31 15:44:16.326395', '2021-10-31 15:44:16.326395');
+INSERT INTO "users" ("id", "name", "email", "password_digest", "created_at", "updated_at") VALUES (102, 'u2', 'u2', '$2a$04$JOT31su43Jn1qie0hNRDXuZfYPzTflMDvFF5IUBEBFl9nexr/beYO', '2021-10-31 15:44:16.326395', '2021-10-31 15:44:16.326395')[0m
+  [1m[36mTRANSACTION (23.2ms)[0m  [1m[36mcommit transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[35mPRAGMA defer_foreign_keys = 0[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+-----------------------
+MainTest: test_likefeed
+-----------------------
+Started GET "/main" for 127.0.0.1 at 2021-10-31 22:44:20 +0700
+Processing by UsersController#login_page as HTML
+  Rendering layout layouts/application.html.haml
+  Rendering users/login_page.html.haml within layouts/application
+  Rendered users/login_page.html.haml within layouts/application (Duration: 75.6ms | Allocations: 18705)
+[Webpacker] Everything's up-to-date. Nothing to do
+  Rendered layouts/_navigation.html.haml (Duration: 6.4ms | Allocations: 13662)
+  Rendered layout layouts/application.html.haml (Duration: 125.2ms | Allocations: 53577)
+Completed 200 OK in 134ms (Views: 126.8ms | ActiveRecord: 0.0ms | Allocations: 59715)
+Started GET "/assets/application-04c3ae28f07e1bf734223bf526d0cdd296440ef53bcb3f80b9f093c6bf02f747.css" for 127.0.0.1 at 2021-10-31 22:44:20 +0700
+Started POST "/main" for 127.0.0.1 at 2021-10-31 22:44:22 +0700
+Processing by UsersController#recieve_login_info as HTML
+  Parameters: {"user"=>{"email"=>"u1", "password"=>"[FILTERED]"}, "commit"=>"Login"}
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."email" = ? LIMIT ?[0m  [["email", "u1"], ["LIMIT", 1]]
+Redirected to http://127.0.0.1:34115/feed
+Completed 302 Found in 9ms (ActiveRecord: 0.2ms | Allocations: 1127)
+Started GET "/feed" for 127.0.0.1 at 2021-10-31 22:44:22 +0700
+Processing by UsersController#feed as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 101], ["LIMIT", 1]]
+  [1m[36mCACHE User Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 101], ["LIMIT", 1]]
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" INNER JOIN "follows" ON "users"."id" = "follows"."followee_id" WHERE "follows"."follower_id" = ?[0m  [["follower_id", 101]]
+  [1m[36mPost Load (0.1ms)[0m  [1m[34mSELECT "posts".* FROM "posts" WHERE "posts"."user_id" = ?[0m  [["user_id", 102]]
+  Rendering layout layouts/application.html.haml
+  Rendering users/feed.html.haml within layouts/application
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 102], ["LIMIT", 1]]
+  [1m[36mLike Load (0.1ms)[0m  [1m[34mSELECT "likes".* FROM "likes" WHERE "likes"."post_id" = ?[0m  [["post_id", 101]]
+  Rendered users/_likeModal.html.haml (Duration: 30.8ms | Allocations: 7431)
+  [1m[36mLike Load (0.1ms)[0m  [1m[34mSELECT "likes".* FROM "likes" WHERE "likes"."post_id" = ? AND "likes"."likeUser" = ? LIMIT ?[0m  [["post_id", 101], ["likeUser", "101"], ["LIMIT", 1]]
+  [1m[36mCACHE User Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 102], ["LIMIT", 1]]
+  [1m[36mLike Load (0.0ms)[0m  [1m[34mSELECT "likes".* FROM "likes" WHERE "likes"."post_id" = ?[0m  [["post_id", 102]]
+  Rendered users/_likeModal.html.haml (Duration: 0.3ms | Allocations: 223)
+  [1m[36mLike Load (0.0ms)[0m  [1m[34mSELECT "likes".* FROM "likes" WHERE "likes"."post_id" = ? AND "likes"."likeUser" = ? LIMIT ?[0m  [["post_id", 102], ["likeUser", "101"], ["LIMIT", 1]]
+  Rendered users/feed.html.haml within layouts/application (Duration: 62.6ms | Allocations: 15152)
+[Webpacker] Everything's up-to-date. Nothing to do
+  Rendered layouts/_navigation.html.haml (Duration: 0.0ms | Allocations: 15)
+  Rendered layout layouts/application.html.haml (Duration: 64.7ms | Allocations: 17249)
+Completed 200 OK in 73ms (Views: 64.7ms | ActiveRecord: 0.6ms | Allocations: 26028)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT sqlite_version(*)[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ?[0m  [["key", "schema_sha1"]]
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT sqlite_version(*)[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = ON[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mFixtures Load (2.5ms)[0m  [1m[31mDELETE FROM "follows";
+DELETE FROM "likes";
+DELETE FROM "posts";
+DELETE FROM "users";
+INSERT INTO "follows" ("id", "follower_id", "followee_id", "created_at", "updated_at") VALUES (980190962, 1, 1, '2021-10-31 15:44:40.157106', '2021-10-31 15:44:40.157106');
+INSERT INTO "follows" ("id", "follower_id", "followee_id", "created_at", "updated_at") VALUES (298486374, 1, 1, '2021-10-31 15:44:40.157106', '2021-10-31 15:44:40.157106');
+INSERT INTO "follows" ("id", "follower_id", "followee_id", "created_at", "updated_at") VALUES (692219080, 101, 102, '2021-10-31 15:44:40.157106', '2021-10-31 15:44:40.157106');
+INSERT INTO "likes" ("id", "post_id", "likeUser", "created_at", "updated_at") VALUES (980190962, 980190962, 'MyString', '2021-10-31 15:44:40.158244', '2021-10-31 15:44:40.158244');
+INSERT INTO "likes" ("id", "post_id", "likeUser", "created_at", "updated_at") VALUES (298486374, 298486374, 'MyString', '2021-10-31 15:44:40.158244', '2021-10-31 15:44:40.158244');
+INSERT INTO "posts" ("id", "user_id", "msg", "created_at", "updated_at") VALUES (980190962, 980190962, 'MyString', '2021-10-31 15:44:40.159499', '2021-10-31 15:44:40.159499');
+INSERT INTO "posts" ("id", "user_id", "msg", "created_at", "updated_at") VALUES (298486374, 298486374, 'MyString', '2021-10-31 15:44:40.159499', '2021-10-31 15:44:40.159499');
+INSERT INTO "posts" ("id", "user_id", "created_at", "updated_at") VALUES (101, 102, '2021-10-31 15:44:40.159499', '2021-10-31 15:44:40.159499');
+INSERT INTO "posts" ("id", "user_id", "created_at", "updated_at") VALUES (102, 102, '2021-10-31 15:44:40.159499', '2021-10-31 15:44:40.159499');
+INSERT INTO "users" ("id", "name", "email", "password_digest", "created_at", "updated_at") VALUES (980190962, 'MyString', 'MyString', 'MyString', '2021-10-31 15:44:40.160103', '2021-10-31 15:44:40.160103');
+INSERT INTO "users" ("id", "name", "email", "password_digest", "created_at", "updated_at") VALUES (298486374, 'MyString', 'MyString', 'MyString', '2021-10-31 15:44:40.160103', '2021-10-31 15:44:40.160103');
+INSERT INTO "users" ("id", "name", "email", "password_digest", "created_at", "updated_at") VALUES (101, 'u1', 'u1', '$2a$04$cU5WV5mu/CBoQSBtYJlpK.gAK7TTsSHkPWSgKw4RDZSBloBBPZvfi', '2021-10-31 15:44:40.160103', '2021-10-31 15:44:40.160103');
+INSERT INTO "users" ("id", "name", "email", "password_digest", "created_at", "updated_at") VALUES (102, 'u2', 'u2', '$2a$04$d7H91pVZVsqaxyvytvSHuOn2FtPzFPTZYlkyVLdyCtKAEPBXUhOv2', '2021-10-31 15:44:40.160103', '2021-10-31 15:44:40.160103')[0m
+  [1m[36mTRANSACTION (11.7ms)[0m  [1m[36mcommit transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = 0[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+-----------------------
+MainTest: test_likefeed
+-----------------------
+Started GET "/main" for 127.0.0.1 at 2021-10-31 22:44:43 +0700
+Processing by UsersController#login_page as HTML
+  Rendering layout layouts/application.html.haml
+  Rendering users/login_page.html.haml within layouts/application
+  Rendered users/login_page.html.haml within layouts/application (Duration: 53.1ms | Allocations: 18701)
+[Webpacker] Everything's up-to-date. Nothing to do
+  Rendered layouts/_navigation.html.haml (Duration: 15.1ms | Allocations: 13660)
+  Rendered layout layouts/application.html.haml (Duration: 140.3ms | Allocations: 53625)
+Completed 200 OK in 223ms (Views: 154.0ms | ActiveRecord: 0.0ms | Allocations: 59765)
+Started GET "/assets/application-04c3ae28f07e1bf734223bf526d0cdd296440ef53bcb3f80b9f093c6bf02f747.css" for 127.0.0.1 at 2021-10-31 22:44:44 +0700
+Started POST "/main" for 127.0.0.1 at 2021-10-31 22:44:45 +0700
+Processing by UsersController#recieve_login_info as HTML
+  Parameters: {"user"=>{"email"=>"u1", "password"=>"[FILTERED]"}, "commit"=>"Login"}
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."email" = ? LIMIT ?[0m  [["email", "u1"], ["LIMIT", 1]]
+Redirected to http://127.0.0.1:32937/feed
+Completed 302 Found in 2ms (ActiveRecord: 0.1ms | Allocations: 1121)
+Started GET "/feed" for 127.0.0.1 at 2021-10-31 22:44:45 +0700
+Processing by UsersController#feed as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 101], ["LIMIT", 1]]
+  [1m[36mCACHE User Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 101], ["LIMIT", 1]]
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" INNER JOIN "follows" ON "users"."id" = "follows"."followee_id" WHERE "follows"."follower_id" = ?[0m  [["follower_id", 101]]
+  [1m[36mPost Load (0.1ms)[0m  [1m[34mSELECT "posts".* FROM "posts" WHERE "posts"."user_id" = ?[0m  [["user_id", 102]]
+  Rendering layout layouts/application.html.haml
+  Rendering users/feed.html.haml within layouts/application
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 102], ["LIMIT", 1]]
+  [1m[36mLike Load (0.1ms)[0m  [1m[34mSELECT "likes".* FROM "likes" WHERE "likes"."post_id" = ?[0m  [["post_id", 101]]
+  Rendered users/_likeModal.html.haml (Duration: 28.0ms | Allocations: 7431)
+  [1m[36mLike Load (0.1ms)[0m  [1m[34mSELECT "likes".* FROM "likes" WHERE "likes"."post_id" = ? AND "likes"."likeUser" = ? LIMIT ?[0m  [["post_id", 101], ["likeUser", "101"], ["LIMIT", 1]]
+  [1m[36mCACHE User Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 102], ["LIMIT", 1]]
+  [1m[36mLike Load (0.0ms)[0m  [1m[34mSELECT "likes".* FROM "likes" WHERE "likes"."post_id" = ?[0m  [["post_id", 102]]
+  Rendered users/_likeModal.html.haml (Duration: 0.3ms | Allocations: 223)
+  [1m[36mLike Load (0.0ms)[0m  [1m[34mSELECT "likes".* FROM "likes" WHERE "likes"."post_id" = ? AND "likes"."likeUser" = ? LIMIT ?[0m  [["post_id", 102], ["likeUser", "101"], ["LIMIT", 1]]
+  Rendered users/feed.html.haml within layouts/application (Duration: 50.0ms | Allocations: 15151)
+[Webpacker] Everything's up-to-date. Nothing to do
+  Rendered layouts/_navigation.html.haml (Duration: 0.0ms | Allocations: 15)
+  Rendered layout layouts/application.html.haml (Duration: 52.0ms | Allocations: 17248)
+Completed 200 OK in 73ms (Views: 52.0ms | ActiveRecord: 0.6ms | Allocations: 25965)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT sqlite_version(*)[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ?[0m  [["key", "schema_sha1"]]
+  [1m[35m (0.0ms)[0m  [1m[34mSELECT sqlite_version(*)[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = ON[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mFixtures Load (2.6ms)[0m  [1m[31mDELETE FROM "follows";
+DELETE FROM "likes";
+DELETE FROM "posts";
+DELETE FROM "users";
+INSERT INTO "follows" ("id", "follower_id", "followee_id", "created_at", "updated_at") VALUES (980190962, 1, 1, '2021-10-31 15:44:55.498151', '2021-10-31 15:44:55.498151');
+INSERT INTO "follows" ("id", "follower_id", "followee_id", "created_at", "updated_at") VALUES (298486374, 1, 1, '2021-10-31 15:44:55.498151', '2021-10-31 15:44:55.498151');
+INSERT INTO "follows" ("id", "follower_id", "followee_id", "created_at", "updated_at") VALUES (692219080, 101, 102, '2021-10-31 15:44:55.498151', '2021-10-31 15:44:55.498151');
+INSERT INTO "likes" ("id", "post_id", "likeUser", "created_at", "updated_at") VALUES (980190962, 980190962, 'MyString', '2021-10-31 15:44:55.499143', '2021-10-31 15:44:55.499143');
+INSERT INTO "likes" ("id", "post_id", "likeUser", "created_at", "updated_at") VALUES (298486374, 298486374, 'MyString', '2021-10-31 15:44:55.499143', '2021-10-31 15:44:55.499143');
+INSERT INTO "posts" ("id", "user_id", "msg", "created_at", "updated_at") VALUES (980190962, 980190962, 'MyString', '2021-10-31 15:44:55.499798', '2021-10-31 15:44:55.499798');
+INSERT INTO "posts" ("id", "user_id", "msg", "created_at", "updated_at") VALUES (298486374, 298486374, 'MyString', '2021-10-31 15:44:55.499798', '2021-10-31 15:44:55.499798');
+INSERT INTO "posts" ("id", "user_id", "created_at", "updated_at") VALUES (101, 102, '2021-10-31 15:44:55.499798', '2021-10-31 15:44:55.499798');
+INSERT INTO "posts" ("id", "user_id", "created_at", "updated_at") VALUES (102, 102, '2021-10-31 15:44:55.499798', '2021-10-31 15:44:55.499798');
+INSERT INTO "users" ("id", "name", "email", "password_digest", "created_at", "updated_at") VALUES (980190962, 'MyString', 'MyString', 'MyString', '2021-10-31 15:44:55.500417', '2021-10-31 15:44:55.500417');
+INSERT INTO "users" ("id", "name", "email", "password_digest", "created_at", "updated_at") VALUES (298486374, 'MyString', 'MyString', 'MyString', '2021-10-31 15:44:55.500417', '2021-10-31 15:44:55.500417');
+INSERT INTO "users" ("id", "name", "email", "password_digest", "created_at", "updated_at") VALUES (101, 'u1', 'u1', '$2a$04$HaLnsxBwP8F4rGZK/F/cquuebe4Wrva18M4VpV5IRnCN7NjAN2OC6', '2021-10-31 15:44:55.500417', '2021-10-31 15:44:55.500417');
+INSERT INTO "users" ("id", "name", "email", "password_digest", "created_at", "updated_at") VALUES (102, 'u2', 'u2', '$2a$04$IIlBqWQ5C0mLo7EddwOZWutDC38cLTmOoTKZKHtiq7KNtOsO.p3lW', '2021-10-31 15:44:55.500417', '2021-10-31 15:44:55.500417')[0m
+  [1m[36mTRANSACTION (10.2ms)[0m  [1m[36mcommit transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = 0[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+-----------------------
+MainTest: test_likefeed
+-----------------------
+Started GET "/main" for 127.0.0.1 at 2021-10-31 22:44:58 +0700
+Processing by UsersController#login_page as HTML
+  Rendering layout layouts/application.html.haml
+  Rendering users/login_page.html.haml within layouts/application
+  Rendered users/login_page.html.haml within layouts/application (Duration: 29.2ms | Allocations: 18701)
+[Webpacker] Everything's up-to-date. Nothing to do
+  Rendered layouts/_navigation.html.haml (Duration: 41.8ms | Allocations: 13672)
+  Rendered layout layouts/application.html.haml (Duration: 641.0ms | Allocations: 53703)
+Completed 200 OK in 667ms (Views: 642.5ms | ActiveRecord: 0.0ms | Allocations: 59843)
+Started GET "/assets/application-04c3ae28f07e1bf734223bf526d0cdd296440ef53bcb3f80b9f093c6bf02f747.css" for 127.0.0.1 at 2021-10-31 22:44:59 +0700
+Started POST "/main" for 127.0.0.1 at 2021-10-31 22:45:01 +0700
+Processing by UsersController#recieve_login_info as HTML
+  Parameters: {"user"=>{"email"=>"u1", "password"=>"[FILTERED]"}, "commit"=>"Login"}
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."email" = ? LIMIT ?[0m  [["email", "u1"], ["LIMIT", 1]]
+Redirected to http://127.0.0.1:43189/feed
+Completed 302 Found in 2ms (ActiveRecord: 0.1ms | Allocations: 1139)
+Started GET "/feed" for 127.0.0.1 at 2021-10-31 22:45:01 +0700
+Processing by UsersController#feed as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 101], ["LIMIT", 1]]
+  [1m[36mCACHE User Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 101], ["LIMIT", 1]]
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" INNER JOIN "follows" ON "users"."id" = "follows"."followee_id" WHERE "follows"."follower_id" = ?[0m  [["follower_id", 101]]
+  [1m[36mPost Load (0.1ms)[0m  [1m[34mSELECT "posts".* FROM "posts" WHERE "posts"."user_id" = ?[0m  [["user_id", 102]]
+  Rendering layout layouts/application.html.haml
+  Rendering users/feed.html.haml within layouts/application
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 102], ["LIMIT", 1]]
+  [1m[36mLike Load (0.1ms)[0m  [1m[34mSELECT "likes".* FROM "likes" WHERE "likes"."post_id" = ?[0m  [["post_id", 101]]
+  Rendered users/_likeModal.html.haml (Duration: 40.1ms | Allocations: 7431)
+  [1m[36mLike Load (0.1ms)[0m  [1m[34mSELECT "likes".* FROM "likes" WHERE "likes"."post_id" = ? AND "likes"."likeUser" = ? LIMIT ?[0m  [["post_id", 101], ["likeUser", "101"], ["LIMIT", 1]]
+  [1m[36mCACHE User Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 102], ["LIMIT", 1]]
+  [1m[36mLike Load (0.0ms)[0m  [1m[34mSELECT "likes".* FROM "likes" WHERE "likes"."post_id" = ?[0m  [["post_id", 102]]
+  Rendered users/_likeModal.html.haml (Duration: 0.3ms | Allocations: 223)
+  [1m[36mLike Load (0.0ms)[0m  [1m[34mSELECT "likes".* FROM "likes" WHERE "likes"."post_id" = ? AND "likes"."likeUser" = ? LIMIT ?[0m  [["post_id", 102], ["likeUser", "101"], ["LIMIT", 1]]
+  Rendered users/feed.html.haml within layouts/application (Duration: 45.5ms | Allocations: 15156)
+[Webpacker] Everything's up-to-date. Nothing to do
+  Rendered layouts/_navigation.html.haml (Duration: 0.1ms | Allocations: 15)
+  Rendered layout layouts/application.html.haml (Duration: 64.6ms | Allocations: 17253)
+Completed 200 OK in 100ms (Views: 64.6ms | ActiveRecord: 0.6ms | Allocations: 26042)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.5ms)[0m  [1m[34mSELECT sqlite_version(*)[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ?[0m  [["key", "schema_sha1"]]
+  [1m[35m (0.0ms)[0m  [1m[34mSELECT sqlite_version(*)[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[35m (0.1ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = ON[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mFixtures Load (3.1ms)[0m  [1m[31mDELETE FROM "follows";
+DELETE FROM "likes";
+DELETE FROM "posts";
+DELETE FROM "users";
+INSERT INTO "follows" ("id", "follower_id", "followee_id", "created_at", "updated_at") VALUES (980190962, 1, 1, '2021-10-31 15:46:39.129053', '2021-10-31 15:46:39.129053');
+INSERT INTO "follows" ("id", "follower_id", "followee_id", "created_at", "updated_at") VALUES (298486374, 1, 1, '2021-10-31 15:46:39.129053', '2021-10-31 15:46:39.129053');
+INSERT INTO "follows" ("id", "follower_id", "followee_id", "created_at", "updated_at") VALUES (692219080, 101, 102, '2021-10-31 15:46:39.129053', '2021-10-31 15:46:39.129053');
+INSERT INTO "likes" ("id", "post_id", "likeUser", "created_at", "updated_at") VALUES (980190962, 980190962, 'MyString', '2021-10-31 15:46:39.130274', '2021-10-31 15:46:39.130274');
+INSERT INTO "likes" ("id", "post_id", "likeUser", "created_at", "updated_at") VALUES (298486374, 298486374, 'MyString', '2021-10-31 15:46:39.130274', '2021-10-31 15:46:39.130274');
+INSERT INTO "posts" ("id", "user_id", "msg", "created_at", "updated_at") VALUES (980190962, 980190962, 'MyString', '2021-10-31 15:46:39.130937', '2021-10-31 15:46:39.130937');
+INSERT INTO "posts" ("id", "user_id", "msg", "created_at", "updated_at") VALUES (298486374, 298486374, 'MyString', '2021-10-31 15:46:39.130937', '2021-10-31 15:46:39.130937');
+INSERT INTO "posts" ("id", "user_id", "created_at", "updated_at") VALUES (101, 102, '2021-10-31 15:46:39.130937', '2021-10-31 15:46:39.130937');
+INSERT INTO "posts" ("id", "user_id", "created_at", "updated_at") VALUES (102, 102, '2021-10-31 15:46:39.130937', '2021-10-31 15:46:39.130937');
+INSERT INTO "users" ("id", "name", "email", "password_digest", "created_at", "updated_at") VALUES (980190962, 'MyString', 'MyString', 'MyString', '2021-10-31 15:46:39.131562', '2021-10-31 15:46:39.131562');
+INSERT INTO "users" ("id", "name", "email", "password_digest", "created_at", "updated_at") VALUES (298486374, 'MyString', 'MyString', 'MyString', '2021-10-31 15:46:39.131562', '2021-10-31 15:46:39.131562');
+INSERT INTO "users" ("id", "name", "email", "password_digest", "created_at", "updated_at") VALUES (101, 'u1', 'u1', '$2a$04$ywFC8RG6l8.uOJqB5uV0Ze7TOcDl4VPFemNx/fYz5/7bhd27JzkpG', '2021-10-31 15:46:39.131562', '2021-10-31 15:46:39.131562');
+INSERT INTO "users" ("id", "name", "email", "password_digest", "created_at", "updated_at") VALUES (102, 'u2', 'u2', '$2a$04$1vUH1b42RPHTz939v.H3J.Cl/9gcZ5hEvCysMQu4ycK.UAtPGqM5u', '2021-10-31 15:46:39.131562', '2021-10-31 15:46:39.131562')[0m
+  [1m[36mTRANSACTION (10.3ms)[0m  [1m[36mcommit transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[35mPRAGMA defer_foreign_keys = 0[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+-----------------------
+MainTest: test_likefeed
+-----------------------
+Started GET "/main" for 127.0.0.1 at 2021-10-31 22:46:42 +0700
+Processing by UsersController#login_page as HTML
+  Rendering layout layouts/application.html.haml
+  Rendering users/login_page.html.haml within layouts/application
+  Rendered users/login_page.html.haml within layouts/application (Duration: 26.6ms | Allocations: 18701)
+[Webpacker] Everything's up-to-date. Nothing to do
+  Rendered layouts/_navigation.html.haml (Duration: 9.9ms | Allocations: 13672)
+  Rendered layout layouts/application.html.haml (Duration: 209.7ms | Allocations: 53753)
+Completed 200 OK in 218ms (Views: 211.1ms | ActiveRecord: 0.0ms | Allocations: 59893)
+Started GET "/assets/application-04c3ae28f07e1bf734223bf526d0cdd296440ef53bcb3f80b9f093c6bf02f747.css" for 127.0.0.1 at 2021-10-31 22:46:42 +0700
+Started POST "/main" for 127.0.0.1 at 2021-10-31 22:46:44 +0700
+Processing by UsersController#recieve_login_info as HTML
+  Parameters: {"user"=>{"email"=>"u1", "password"=>"[FILTERED]"}, "commit"=>"Login"}
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."email" = ? LIMIT ?[0m  [["email", "u1"], ["LIMIT", 1]]
+Redirected to http://127.0.0.1:34485/feed
+Completed 302 Found in 2ms (ActiveRecord: 0.1ms | Allocations: 1135)
+Started GET "/feed" for 127.0.0.1 at 2021-10-31 22:46:44 +0700
+Processing by UsersController#feed as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 101], ["LIMIT", 1]]
+  [1m[36mCACHE User Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 101], ["LIMIT", 1]]
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" INNER JOIN "follows" ON "users"."id" = "follows"."followee_id" WHERE "follows"."follower_id" = ?[0m  [["follower_id", 101]]
+  [1m[36mPost Load (0.1ms)[0m  [1m[34mSELECT "posts".* FROM "posts" WHERE "posts"."user_id" = ?[0m  [["user_id", 102]]
+  Rendering layout layouts/application.html.haml
+  Rendering users/feed.html.haml within layouts/application
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 102], ["LIMIT", 1]]
+  [1m[36mLike Load (0.1ms)[0m  [1m[34mSELECT "likes".* FROM "likes" WHERE "likes"."post_id" = ?[0m  [["post_id", 101]]
+  Rendered users/_likeModal.html.haml (Duration: 3.9ms | Allocations: 7431)
+  [1m[36mLike Load (0.1ms)[0m  [1m[34mSELECT "likes".* FROM "likes" WHERE "likes"."post_id" = ? AND "likes"."likeUser" = ? LIMIT ?[0m  [["post_id", 101], ["likeUser", "101"], ["LIMIT", 1]]
+  [1m[36mCACHE User Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 102], ["LIMIT", 1]]
+  [1m[36mLike Load (0.0ms)[0m  [1m[34mSELECT "likes".* FROM "likes" WHERE "likes"."post_id" = ?[0m  [["post_id", 102]]
+  Rendered users/_likeModal.html.haml (Duration: 0.4ms | Allocations: 223)
+  [1m[36mLike Load (0.0ms)[0m  [1m[34mSELECT "likes".* FROM "likes" WHERE "likes"."post_id" = ? AND "likes"."likeUser" = ? LIMIT ?[0m  [["post_id", 102], ["likeUser", "101"], ["LIMIT", 1]]
+  Rendered users/feed.html.haml within layouts/application (Duration: 23.8ms | Allocations: 15156)
+[Webpacker] Everything's up-to-date. Nothing to do
+  Rendered layouts/_navigation.html.haml (Duration: 0.0ms | Allocations: 15)
+  Rendered layout layouts/application.html.haml (Duration: 51.3ms | Allocations: 17254)
+Completed 200 OK in 97ms (Views: 51.3ms | ActiveRecord: 0.6ms | Allocations: 26049)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT sqlite_version(*)[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ?[0m  [["key", "schema_sha1"]]
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT sqlite_version(*)[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[35m (0.1ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = ON[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mFixtures Load (2.5ms)[0m  [1m[31mDELETE FROM "follows";
+DELETE FROM "likes";
+DELETE FROM "posts";
+DELETE FROM "users";
+INSERT INTO "follows" ("id", "follower_id", "followee_id", "created_at", "updated_at") VALUES (980190962, 1, 1, '2021-10-31 15:55:16.628356', '2021-10-31 15:55:16.628356');
+INSERT INTO "follows" ("id", "follower_id", "followee_id", "created_at", "updated_at") VALUES (298486374, 1, 1, '2021-10-31 15:55:16.628356', '2021-10-31 15:55:16.628356');
+INSERT INTO "follows" ("id", "follower_id", "followee_id", "created_at", "updated_at") VALUES (692219080, 101, 102, '2021-10-31 15:55:16.628356', '2021-10-31 15:55:16.628356');
+INSERT INTO "likes" ("id", "post_id", "likeUser", "created_at", "updated_at") VALUES (980190962, 980190962, 'MyString', '2021-10-31 15:55:16.629283', '2021-10-31 15:55:16.629283');
+INSERT INTO "likes" ("id", "post_id", "likeUser", "created_at", "updated_at") VALUES (298486374, 298486374, 'MyString', '2021-10-31 15:55:16.629283', '2021-10-31 15:55:16.629283');
+INSERT INTO "posts" ("id", "user_id", "msg", "created_at", "updated_at") VALUES (980190962, 980190962, 'MyString', '2021-10-31 15:55:16.629865', '2021-10-31 15:55:16.629865');
+INSERT INTO "posts" ("id", "user_id", "msg", "created_at", "updated_at") VALUES (298486374, 298486374, 'MyString', '2021-10-31 15:55:16.629865', '2021-10-31 15:55:16.629865');
+INSERT INTO "posts" ("id", "user_id", "created_at", "updated_at") VALUES (101, 102, '2021-10-31 15:55:16.629865', '2021-10-31 15:55:16.629865');
+INSERT INTO "posts" ("id", "user_id", "created_at", "updated_at") VALUES (102, 102, '2021-10-31 15:55:16.629865', '2021-10-31 15:55:16.629865');
+INSERT INTO "users" ("id", "name", "email", "password_digest", "created_at", "updated_at") VALUES (980190962, 'MyString', 'MyString', 'MyString', '2021-10-31 15:55:16.630637', '2021-10-31 15:55:16.630637');
+INSERT INTO "users" ("id", "name", "email", "password_digest", "created_at", "updated_at") VALUES (298486374, 'MyString', 'MyString', 'MyString', '2021-10-31 15:55:16.630637', '2021-10-31 15:55:16.630637');
+INSERT INTO "users" ("id", "name", "email", "password_digest", "created_at", "updated_at") VALUES (101, 'u1', 'u1', '$2a$04$7TH6yjX1yNgQm9V0bSZjTungK6bYTvzmwOI7k0AxdXEJocxgFYUkS', '2021-10-31 15:55:16.630637', '2021-10-31 15:55:16.630637');
+INSERT INTO "users" ("id", "name", "email", "password_digest", "created_at", "updated_at") VALUES (102, 'u2', 'u2', '$2a$04$yvNcW4iRru14aEwSB9nkJOeVAH13lLFNBOUchMt4EKnFiqaGSoJIK', '2021-10-31 15:55:16.630637', '2021-10-31 15:55:16.630637')[0m
+  [1m[36mTRANSACTION (17.5ms)[0m  [1m[36mcommit transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[35mPRAGMA defer_foreign_keys = 0[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+--------------------------------
+MainTest: test_login_wrong_email
+--------------------------------
+Started GET "/main" for 127.0.0.1 at 2021-10-31 22:55:20 +0700
+Processing by UsersController#login_page as HTML
+  Rendering layout layouts/application.html.haml
+  Rendering users/login_page.html.haml within layouts/application
+  Rendered users/login_page.html.haml within layouts/application (Duration: 46.5ms | Allocations: 18699)
+[Webpacker] Everything's up-to-date. Nothing to do
+  Rendered layouts/_navigation.html.haml (Duration: 24.2ms | Allocations: 13667)
+  Rendered layout layouts/application.html.haml (Duration: 315.2ms | Allocations: 53806)
+Completed 200 OK in 337ms (Views: 319.2ms | ActiveRecord: 0.0ms | Allocations: 59941)
+Started GET "/assets/application-04c3ae28f07e1bf734223bf526d0cdd296440ef53bcb3f80b9f093c6bf02f747.css" for 127.0.0.1 at 2021-10-31 22:55:20 +0700
+Started POST "/main" for 127.0.0.1 at 2021-10-31 22:55:22 +0700
+Processing by UsersController#recieve_login_info as HTML
+  Parameters: {"user"=>{"email"=>"u", "password"=>"[FILTERED]"}, "commit"=>"Login"}
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."email" = ? LIMIT ?[0m  [["email", "u"], ["LIMIT", 1]]
+Redirected to http://127.0.0.1:35871/main
+Completed 302 Found in 2ms (ActiveRecord: 0.2ms | Allocations: 1043)
+Started GET "/main" for 127.0.0.1 at 2021-10-31 22:55:22 +0700
+Processing by UsersController#login_page as HTML
+  Rendering layout layouts/application.html.haml
+  Rendering users/login_page.html.haml within layouts/application
+  Rendered users/login_page.html.haml within layouts/application (Duration: 1.7ms | Allocations: 1631)
+[Webpacker] Everything's up-to-date. Nothing to do
+  Rendered layouts/_navigation.html.haml (Duration: 0.0ms | Allocations: 18)
+  Rendered layout layouts/application.html.haml (Duration: 30.0ms | Allocations: 3759)
+Completed 200 OK in 31ms (Views: 30.3ms | ActiveRecord: 0.0ms | Allocations: 4315)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mbegin transaction[0m
+-----------------------------------
+MainTest: test_login_wrong_password
+-----------------------------------
+Started GET "/main" for 127.0.0.1 at 2021-10-31 22:55:22 +0700
+Processing by UsersController#login_page as HTML
+  Rendering layout layouts/application.html.haml
+  Rendering users/login_page.html.haml within layouts/application
+  Rendered users/login_page.html.haml within layouts/application (Duration: 1.6ms | Allocations: 1618)
+[Webpacker] Everything's up-to-date. Nothing to do
+  Rendered layouts/_navigation.html.haml (Duration: 0.1ms | Allocations: 18)
+  Rendered layout layouts/application.html.haml (Duration: 23.0ms | Allocations: 3765)
+Completed 200 OK in 24ms (Views: 23.3ms | ActiveRecord: 0.0ms | Allocations: 4254)
+Started POST "/main" for 127.0.0.1 at 2021-10-31 22:55:23 +0700
+Processing by UsersController#recieve_login_info as HTML
+  Parameters: {"user"=>{"email"=>"u1", "password"=>"[FILTERED]"}, "commit"=>"Login"}
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."email" = ? LIMIT ?[0m  [["email", "u1"], ["LIMIT", 1]]
+Redirected to http://127.0.0.1:35871/main
+Completed 302 Found in 2ms (ActiveRecord: 0.1ms | Allocations: 609)
+Started GET "/main" for 127.0.0.1 at 2021-10-31 22:55:23 +0700
+Processing by UsersController#login_page as HTML
+  Rendering layout layouts/application.html.haml
+  Rendering users/login_page.html.haml within layouts/application
+  Rendered users/login_page.html.haml within layouts/application (Duration: 1.8ms | Allocations: 1620)
+[Webpacker] Everything's up-to-date. Nothing to do
+  Rendered layouts/_navigation.html.haml (Duration: 0.0ms | Allocations: 18)
+  Rendered layout layouts/application.html.haml (Duration: 3.8ms | Allocations: 3750)
+Completed 200 OK in 5ms (Views: 4.2ms | ActiveRecord: 0.0ms | Allocations: 4301)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+-----------------------
+MainTest: test_likefeed
+-----------------------
+Started GET "/main" for 127.0.0.1 at 2021-10-31 22:55:24 +0700
+Processing by UsersController#login_page as HTML
+  Rendering layout layouts/application.html.haml
+  Rendering users/login_page.html.haml within layouts/application
+  Rendered users/login_page.html.haml within layouts/application (Duration: 1.6ms | Allocations: 1618)
+[Webpacker] Everything's up-to-date. Nothing to do
+  Rendered layouts/_navigation.html.haml (Duration: 0.0ms | Allocations: 18)
+  Rendered layout layouts/application.html.haml (Duration: 3.8ms | Allocations: 3746)
+Completed 200 OK in 4ms (Views: 4.0ms | ActiveRecord: 0.0ms | Allocations: 4235)
+Started POST "/main" for 127.0.0.1 at 2021-10-31 22:55:24 +0700
+Processing by UsersController#recieve_login_info as HTML
+  Parameters: {"user"=>{"email"=>"u1", "password"=>"[FILTERED]"}, "commit"=>"Login"}
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."email" = ? LIMIT ?[0m  [["email", "u1"], ["LIMIT", 1]]
+Redirected to http://127.0.0.1:35871/feed
+Completed 302 Found in 2ms (ActiveRecord: 0.1ms | Allocations: 563)
+Started GET "/feed" for 127.0.0.1 at 2021-10-31 22:55:24 +0700
+Processing by UsersController#feed as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 101], ["LIMIT", 1]]
+  [1m[36mCACHE User Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 101], ["LIMIT", 1]]
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" INNER JOIN "follows" ON "users"."id" = "follows"."followee_id" WHERE "follows"."follower_id" = ?[0m  [["follower_id", 101]]
+  [1m[36mPost Load (0.1ms)[0m  [1m[34mSELECT "posts".* FROM "posts" WHERE "posts"."user_id" = ?[0m  [["user_id", 102]]
+  Rendering layout layouts/application.html.haml
+  Rendering users/feed.html.haml within layouts/application
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 102], ["LIMIT", 1]]
+  [1m[36mLike Load (0.2ms)[0m  [1m[34mSELECT "likes".* FROM "likes" WHERE "likes"."post_id" = ?[0m  [["post_id", 101]]
+  Rendered users/_likeModal.html.haml (Duration: 4.5ms | Allocations: 7431)
+  [1m[36mLike Load (0.1ms)[0m  [1m[34mSELECT "likes".* FROM "likes" WHERE "likes"."post_id" = ? AND "likes"."likeUser" = ? LIMIT ?[0m  [["post_id", 101], ["likeUser", "101"], ["LIMIT", 1]]
+  [1m[36mCACHE User Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 102], ["LIMIT", 1]]
+  [1m[36mLike Load (0.0ms)[0m  [1m[34mSELECT "likes".* FROM "likes" WHERE "likes"."post_id" = ?[0m  [["post_id", 102]]
+  Rendered users/_likeModal.html.haml (Duration: 0.4ms | Allocations: 223)
+  [1m[36mLike Load (0.0ms)[0m  [1m[34mSELECT "likes".* FROM "likes" WHERE "likes"."post_id" = ? AND "likes"."likeUser" = ? LIMIT ?[0m  [["post_id", 102], ["likeUser", "101"], ["LIMIT", 1]]
+  Rendered users/feed.html.haml within layouts/application (Duration: 34.9ms | Allocations: 15151)
+[Webpacker] Everything's up-to-date. Nothing to do
+  Rendered layouts/_navigation.html.haml (Duration: 0.1ms | Allocations: 15)
+  Rendered layout layouts/application.html.haml (Duration: 55.7ms | Allocations: 17248)
+Completed 200 OK in 93ms (Views: 84.0ms | ActiveRecord: 0.8ms | Allocations: 26090)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+----------------------------
+MainTest: test_login_success
+----------------------------
+Started GET "/main" for 127.0.0.1 at 2021-10-31 22:55:27 +0700
+Processing by UsersController#login_page as HTML
+  Rendering layout layouts/application.html.haml
+  Rendering users/login_page.html.haml within layouts/application
+  Rendered users/login_page.html.haml within layouts/application (Duration: 1.7ms | Allocations: 1625)
+[Webpacker] Everything's up-to-date. Nothing to do
+  Rendered layouts/_navigation.html.haml (Duration: 0.1ms | Allocations: 18)
+  Rendered layout layouts/application.html.haml (Duration: 22.5ms | Allocations: 3758)
+Completed 200 OK in 23ms (Views: 22.8ms | ActiveRecord: 0.0ms | Allocations: 4243)
+Started POST "/main" for 127.0.0.1 at 2021-10-31 22:55:27 +0700
+Processing by UsersController#recieve_login_info as HTML
+  Parameters: {"user"=>{"email"=>"u1", "password"=>"[FILTERED]"}, "commit"=>"Login"}
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."email" = ? LIMIT ?[0m  [["email", "u1"], ["LIMIT", 1]]
+Redirected to http://127.0.0.1:35871/feed
+Completed 302 Found in 2ms (ActiveRecord: 0.1ms | Allocations: 561)
+Started GET "/feed" for 127.0.0.1 at 2021-10-31 22:55:27 +0700
+Processing by UsersController#feed as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 101], ["LIMIT", 1]]
+  [1m[36mCACHE User Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 101], ["LIMIT", 1]]
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" INNER JOIN "follows" ON "users"."id" = "follows"."followee_id" WHERE "follows"."follower_id" = ?[0m  [["follower_id", 101]]
+  [1m[36mPost Load (0.0ms)[0m  [1m[34mSELECT "posts".* FROM "posts" WHERE "posts"."user_id" = ?[0m  [["user_id", 102]]
+  Rendering layout layouts/application.html.haml
+  Rendering users/feed.html.haml within layouts/application
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 102], ["LIMIT", 1]]
+  [1m[36mLike Load (0.0ms)[0m  [1m[34mSELECT "likes".* FROM "likes" WHERE "likes"."post_id" = ?[0m  [["post_id", 101]]
+  Rendered users/_likeModal.html.haml (Duration: 0.4ms | Allocations: 286)
+  [1m[36mLike Load (0.0ms)[0m  [1m[34mSELECT "likes".* FROM "likes" WHERE "likes"."post_id" = ? AND "likes"."likeUser" = ? LIMIT ?[0m  [["post_id", 101], ["likeUser", "101"], ["LIMIT", 1]]
+  [1m[36mCACHE User Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 102], ["LIMIT", 1]]
+  [1m[36mLike Load (0.0ms)[0m  [1m[34mSELECT "likes".* FROM "likes" WHERE "likes"."post_id" = ?[0m  [["post_id", 102]]
+  Rendered users/_likeModal.html.haml (Duration: 0.3ms | Allocations: 223)
+  [1m[36mLike Load (0.0ms)[0m  [1m[34mSELECT "likes".* FROM "likes" WHERE "likes"."post_id" = ? AND "likes"."likeUser" = ? LIMIT ?[0m  [["post_id", 102], ["likeUser", "101"], ["LIMIT", 1]]
+  Rendered users/feed.html.haml within layouts/application (Duration: 2.3ms | Allocations: 1536)
+[Webpacker] Everything's up-to-date. Nothing to do
+  Rendered layouts/_navigation.html.haml (Duration: 0.0ms | Allocations: 15)
+  Rendered layout layouts/application.html.haml (Duration: 8.5ms | Allocations: 3632)
+Completed 200 OK in 11ms (Views: 8.8ms | ActiveRecord: 0.3ms | Allocations: 5087)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mrollback transaction[0m
