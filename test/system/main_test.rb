@@ -27,7 +27,7 @@ class MainTest < ApplicationSystemTestCase
     fill_in "Email", with: "u1"
     fill_in "Password", with: "1234"
     click_on "Login"
-    find('/like').find('input').click
-    assert_selector "p", test: "Liked!"
+    find("html body div.container div.container div.row div.col div.col div.col form.button_to input.btn.btn-outline-primary").click
+    assert_selector "p", text: "Liked!"
   end
 end

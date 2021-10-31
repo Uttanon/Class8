@@ -33061,3 +33061,253 @@ Processing by UsersController#feed as HTML
 Completed 200 OK in 73ms (Views: 67.5ms | ActiveRecord: 1.0ms | Allocations: 22594)
 
 
+Started GET "/main" for 127.0.0.1 at 2021-10-31 23:43:51 +0700
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT sqlite_version(*)[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by UsersController#login_page as HTML
+  Rendering layout layouts/application.html.haml
+  Rendering users/login_page.html.haml within layouts/application
+  Rendered users/login_page.html.haml within layouts/application (Duration: 23.3ms | Allocations: 20168)
+[Webpacker] Everything's up-to-date. Nothing to do
+  Rendered layouts/_navigation.html.haml (Duration: 5.5ms | Allocations: 14024)
+  Rendered layout layouts/application.html.haml (Duration: 62.8ms | Allocations: 46831)
+Completed 200 OK in 79ms (Views: 65.1ms | ActiveRecord: 0.3ms | Allocations: 57934)
+
+
+Started POST "/main" for 127.0.0.1 at 2021-10-31 23:43:54 +0700
+Processing by UsersController#recieve_login_info as HTML
+  Parameters: {"authenticity_token"=>"[FILTERED]", "user"=>{"email"=>"a", "password"=>"[FILTERED]"}, "commit"=>"Login"}
+  [1m[36mUser Load (3.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."email" = ? LIMIT ?[0m  [["email", "a"], ["LIMIT", 1]]
+  ↳ app/controllers/users_controller.rb:72:in `recieve_login_info'
+Redirected to http://localhost:3000/feed
+Completed 302 Found in 476ms (ActiveRecord: 3.2ms | Allocations: 2160)
+
+
+Started GET "/feed" for 127.0.0.1 at 2021-10-31 23:43:55 +0700
+Processing by UsersController#feed as HTML
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 5], ["LIMIT", 1]]
+  ↳ app/controllers/users_controller.rb:87:in `feed'
+  [1m[36mCACHE User Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 5], ["LIMIT", 1]]
+  ↳ app/models/user.rb:16:in `get_feed_post'
+  [1m[36mUser Load (6.2ms)[0m  [1m[34mSELECT "users".* FROM "users" INNER JOIN "follows" ON "users"."id" = "follows"."followee_id" WHERE "follows"."follower_id" = ?[0m  [["follower_id", 5]]
+  ↳ app/models/user.rb:16:in `get_feed_post'
+  [1m[36mPost Load (3.4ms)[0m  [1m[34mSELECT "posts".* FROM "posts" WHERE "posts"."user_id" = ?[0m  [["user_id", 6]]
+  ↳ app/models/user.rb:17:in `block in get_feed_post'
+  [1m[36mPost Load (0.1ms)[0m  [1m[34mSELECT "posts".* FROM "posts" WHERE "posts"."user_id" = ?[0m  [["user_id", 7]]
+  ↳ app/models/user.rb:17:in `block in get_feed_post'
+  Rendering layout layouts/application.html.haml
+  Rendering users/feed.html.haml within layouts/application
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 6], ["LIMIT", 1]]
+  ↳ app/views/users/feed.html.haml:10
+  [1m[36mLike Load (1.5ms)[0m  [1m[34mSELECT "likes".* FROM "likes" WHERE "likes"."post_id" = ?[0m  [["post_id", 9]]
+  ↳ app/views/users/_likeModal.html.haml:8
+  [1m[36mUser Load (3.7ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 8], ["LIMIT", 1]]
+  ↳ app/views/users/_likeModal.html.haml:9
+  [1m[36mCACHE User Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 8], ["LIMIT", 1]]
+  ↳ app/views/users/_likeModal.html.haml:9
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 5], ["LIMIT", 1]]
+  ↳ app/views/users/_likeModal.html.haml:9
+  [1m[36mCACHE User Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 5], ["LIMIT", 1]]
+  ↳ app/views/users/_likeModal.html.haml:9
+  Rendered users/_likeModal.html.haml (Duration: 34.0ms | Allocations: 15213)
+  [1m[36mLike Load (0.2ms)[0m  [1m[34mSELECT "likes".* FROM "likes" WHERE "likes"."post_id" = ? AND "likes"."likeUser" = ? LIMIT ?[0m  [["post_id", 9], ["likeUser", "5"], ["LIMIT", 1]]
+  ↳ app/views/users/feed.html.haml:18
+  [1m[36mCACHE User Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 6], ["LIMIT", 1]]
+  ↳ app/views/users/feed.html.haml:10
+  [1m[36mLike Load (0.1ms)[0m  [1m[34mSELECT "likes".* FROM "likes" WHERE "likes"."post_id" = ?[0m  [["post_id", 10]]
+  ↳ app/views/users/_likeModal.html.haml:8
+  [1m[36mCACHE User Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 5], ["LIMIT", 1]]
+  ↳ app/views/users/_likeModal.html.haml:9
+  [1m[36mCACHE User Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 5], ["LIMIT", 1]]
+  ↳ app/views/users/_likeModal.html.haml:9
+  Rendered users/_likeModal.html.haml (Duration: 8.0ms | Allocations: 2144)
+  [1m[36mLike Load (0.1ms)[0m  [1m[34mSELECT "likes".* FROM "likes" WHERE "likes"."post_id" = ? AND "likes"."likeUser" = ? LIMIT ?[0m  [["post_id", 10], ["likeUser", "5"], ["LIMIT", 1]]
+  ↳ app/views/users/feed.html.haml:18
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 7], ["LIMIT", 1]]
+  ↳ app/views/users/feed.html.haml:10
+  [1m[36mLike Load (0.1ms)[0m  [1m[34mSELECT "likes".* FROM "likes" WHERE "likes"."post_id" = ?[0m  [["post_id", 11]]
+  ↳ app/views/users/_likeModal.html.haml:8
+  [1m[36mCACHE User Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 5], ["LIMIT", 1]]
+  ↳ app/views/users/_likeModal.html.haml:9
+  [1m[36mCACHE User Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 5], ["LIMIT", 1]]
+  ↳ app/views/users/_likeModal.html.haml:9
+  Rendered users/_likeModal.html.haml (Duration: 9.3ms | Allocations: 2133)
+  [1m[36mLike Load (0.1ms)[0m  [1m[34mSELECT "likes".* FROM "likes" WHERE "likes"."post_id" = ? AND "likes"."likeUser" = ? LIMIT ?[0m  [["post_id", 11], ["likeUser", "5"], ["LIMIT", 1]]
+  ↳ app/views/users/feed.html.haml:18
+  [1m[36mCACHE User Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 7], ["LIMIT", 1]]
+  ↳ app/views/users/feed.html.haml:10
+  [1m[36mLike Load (0.0ms)[0m  [1m[34mSELECT "likes".* FROM "likes" WHERE "likes"."post_id" = ?[0m  [["post_id", 13]]
+  ↳ app/views/users/_likeModal.html.haml:8
+  Rendered users/_likeModal.html.haml (Duration: 1.8ms | Allocations: 849)
+  [1m[36mLike Load (0.0ms)[0m  [1m[34mSELECT "likes".* FROM "likes" WHERE "likes"."post_id" = ? AND "likes"."likeUser" = ? LIMIT ?[0m  [["post_id", 13], ["likeUser", "5"], ["LIMIT", 1]]
+  ↳ app/views/users/feed.html.haml:18
+  Rendered users/feed.html.haml within layouts/application (Duration: 79.9ms | Allocations: 33509)
+[Webpacker] Everything's up-to-date. Nothing to do
+  Rendered layouts/_navigation.html.haml (Duration: 0.1ms | Allocations: 47)
+  Rendered layout layouts/application.html.haml (Duration: 89.9ms | Allocations: 36707)
+Completed 200 OK in 148ms (Views: 88.4ms | ActiveRecord: 16.8ms | Allocations: 53339)
+
+
+Started GET "/main" for 127.0.0.1 at 2021-10-31 23:51:14 +0700
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT sqlite_version(*)[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by UsersController#login_page as HTML
+  Rendering layout layouts/application.html.haml
+  Rendering users/login_page.html.haml within layouts/application
+  Rendered users/login_page.html.haml within layouts/application (Duration: 17.3ms | Allocations: 20157)
+[Webpacker] Everything's up-to-date. Nothing to do
+  Rendered layouts/_navigation.html.haml (Duration: 5.2ms | Allocations: 14025)
+  Rendered layout layouts/application.html.haml (Duration: 46.5ms | Allocations: 46817)
+Completed 200 OK in 67ms (Views: 56.0ms | ActiveRecord: 0.3ms | Allocations: 58014)
+
+
+Started POST "/main" for 127.0.0.1 at 2021-10-31 23:51:17 +0700
+Processing by UsersController#recieve_login_info as HTML
+  Parameters: {"authenticity_token"=>"[FILTERED]", "user"=>{"email"=>"a", "password"=>"[FILTERED]"}, "commit"=>"Login"}
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."email" = ? LIMIT ?[0m  [["email", "a"], ["LIMIT", 1]]
+  ↳ app/controllers/users_controller.rb:72:in `recieve_login_info'
+Redirected to http://localhost:3000/feed
+Completed 302 Found in 331ms (ActiveRecord: 0.1ms | Allocations: 2096)
+
+
+Started GET "/feed" for 127.0.0.1 at 2021-10-31 23:51:17 +0700
+Processing by UsersController#feed as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 5], ["LIMIT", 1]]
+  ↳ app/controllers/users_controller.rb:87:in `feed'
+  [1m[36mCACHE User Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 5], ["LIMIT", 1]]
+  ↳ app/models/user.rb:16:in `get_feed_post'
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" INNER JOIN "follows" ON "users"."id" = "follows"."followee_id" WHERE "follows"."follower_id" = ?[0m  [["follower_id", 5]]
+  ↳ app/models/user.rb:16:in `get_feed_post'
+  [1m[36mPost Load (0.1ms)[0m  [1m[34mSELECT "posts".* FROM "posts" WHERE "posts"."user_id" = ?[0m  [["user_id", 6]]
+  ↳ app/models/user.rb:17:in `block in get_feed_post'
+  [1m[36mPost Load (0.1ms)[0m  [1m[34mSELECT "posts".* FROM "posts" WHERE "posts"."user_id" = ?[0m  [["user_id", 7]]
+  ↳ app/models/user.rb:17:in `block in get_feed_post'
+  Rendering layout layouts/application.html.haml
+  Rendering users/feed.html.haml within layouts/application
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 6], ["LIMIT", 1]]
+  ↳ app/views/users/feed.html.haml:10
+  [1m[36mLike Load (0.1ms)[0m  [1m[34mSELECT "likes".* FROM "likes" WHERE "likes"."post_id" = ?[0m  [["post_id", 9]]
+  ↳ app/views/users/_likeModal.html.haml:8
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 8], ["LIMIT", 1]]
+  ↳ app/views/users/_likeModal.html.haml:9
+  [1m[36mCACHE User Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 8], ["LIMIT", 1]]
+  ↳ app/views/users/_likeModal.html.haml:9
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 5], ["LIMIT", 1]]
+  ↳ app/views/users/_likeModal.html.haml:9
+  [1m[36mCACHE User Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 5], ["LIMIT", 1]]
+  ↳ app/views/users/_likeModal.html.haml:9
+  Rendered users/_likeModal.html.haml (Duration: 24.4ms | Allocations: 15211)
+  [1m[36mLike Load (0.1ms)[0m  [1m[34mSELECT "likes".* FROM "likes" WHERE "likes"."post_id" = ? AND "likes"."likeUser" = ? LIMIT ?[0m  [["post_id", 9], ["likeUser", "5"], ["LIMIT", 1]]
+  ↳ app/views/users/feed.html.haml:18
+  [1m[36mCACHE User Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 6], ["LIMIT", 1]]
+  ↳ app/views/users/feed.html.haml:10
+  [1m[36mLike Load (0.1ms)[0m  [1m[34mSELECT "likes".* FROM "likes" WHERE "likes"."post_id" = ?[0m  [["post_id", 10]]
+  ↳ app/views/users/_likeModal.html.haml:8
+  [1m[36mCACHE User Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 5], ["LIMIT", 1]]
+  ↳ app/views/users/_likeModal.html.haml:9
+  [1m[36mCACHE User Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 5], ["LIMIT", 1]]
+  ↳ app/views/users/_likeModal.html.haml:9
+  Rendered users/_likeModal.html.haml (Duration: 2.5ms | Allocations: 2144)
+  [1m[36mLike Load (0.0ms)[0m  [1m[34mSELECT "likes".* FROM "likes" WHERE "likes"."post_id" = ? AND "likes"."likeUser" = ? LIMIT ?[0m  [["post_id", 10], ["likeUser", "5"], ["LIMIT", 1]]
+  ↳ app/views/users/feed.html.haml:18
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 7], ["LIMIT", 1]]
+  ↳ app/views/users/feed.html.haml:10
+  [1m[36mLike Load (0.0ms)[0m  [1m[34mSELECT "likes".* FROM "likes" WHERE "likes"."post_id" = ?[0m  [["post_id", 11]]
+  ↳ app/views/users/_likeModal.html.haml:8
+  [1m[36mCACHE User Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 5], ["LIMIT", 1]]
+  ↳ app/views/users/_likeModal.html.haml:9
+  [1m[36mCACHE User Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 5], ["LIMIT", 1]]
+  ↳ app/views/users/_likeModal.html.haml:9
+  Rendered users/_likeModal.html.haml (Duration: 17.1ms | Allocations: 2133)
+  [1m[36mLike Load (0.1ms)[0m  [1m[34mSELECT "likes".* FROM "likes" WHERE "likes"."post_id" = ? AND "likes"."likeUser" = ? LIMIT ?[0m  [["post_id", 11], ["likeUser", "5"], ["LIMIT", 1]]
+  ↳ app/views/users/feed.html.haml:18
+  [1m[36mCACHE User Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 7], ["LIMIT", 1]]
+  ↳ app/views/users/feed.html.haml:10
+  [1m[36mLike Load (0.0ms)[0m  [1m[34mSELECT "likes".* FROM "likes" WHERE "likes"."post_id" = ?[0m  [["post_id", 13]]
+  ↳ app/views/users/_likeModal.html.haml:8
+  Rendered users/_likeModal.html.haml (Duration: 6.1ms | Allocations: 849)
+  [1m[36mLike Load (0.1ms)[0m  [1m[34mSELECT "likes".* FROM "likes" WHERE "likes"."post_id" = ? AND "likes"."likeUser" = ? LIMIT ?[0m  [["post_id", 13], ["likeUser", "5"], ["LIMIT", 1]]
+  ↳ app/views/users/feed.html.haml:18
+  Rendered users/feed.html.haml within layouts/application (Duration: 62.7ms | Allocations: 33507)
+[Webpacker] Everything's up-to-date. Nothing to do
+  Rendered layouts/_navigation.html.haml (Duration: 0.1ms | Allocations: 47)
+  Rendered layout layouts/application.html.haml (Duration: 65.6ms | Allocations: 36705)
+Completed 200 OK in 85ms (Views: 59.7ms | ActiveRecord: 7.0ms | Allocations: 53339)
+
+
+Started POST "/unlike" for 127.0.0.1 at 2021-10-31 23:51:19 +0700
+Processing by UsersController#unlikepost as HTML
+  Parameters: {"authenticity_token"=>"[FILTERED]", "pid"=>"9"}
+  [1m[36mLike Load (0.1ms)[0m  [1m[34mSELECT "likes".* FROM "likes" WHERE "likes"."post_id" = ? AND "likes"."likeUser" = ? LIMIT ?[0m  [["post_id", 9], ["likeUser", "5"], ["LIMIT", 1]]
+  ↳ app/controllers/users_controller.rb:127:in `unlikepost'
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  ↳ app/controllers/users_controller.rb:127:in `unlikepost'
+  [1m[36mLike Destroy (1.5ms)[0m  [1m[31mDELETE FROM "likes" WHERE "likes"."id" = ?[0m  [["id", 29]]
+  ↳ app/controllers/users_controller.rb:127:in `unlikepost'
+  [1m[36mTRANSACTION (8.7ms)[0m  [1m[36mcommit transaction[0m
+  ↳ app/controllers/users_controller.rb:127:in `unlikepost'
+Redirected to http://localhost:3000/feed
+Completed 302 Found in 17ms (ActiveRecord: 10.3ms | Allocations: 4934)
+
+
+Started GET "/feed" for 127.0.0.1 at 2021-10-31 23:51:19 +0700
+Processing by UsersController#feed as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 5], ["LIMIT", 1]]
+  ↳ app/controllers/users_controller.rb:87:in `feed'
+  [1m[36mCACHE User Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 5], ["LIMIT", 1]]
+  ↳ app/models/user.rb:16:in `get_feed_post'
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" INNER JOIN "follows" ON "users"."id" = "follows"."followee_id" WHERE "follows"."follower_id" = ?[0m  [["follower_id", 5]]
+  ↳ app/models/user.rb:16:in `get_feed_post'
+  [1m[36mPost Load (0.0ms)[0m  [1m[34mSELECT "posts".* FROM "posts" WHERE "posts"."user_id" = ?[0m  [["user_id", 6]]
+  ↳ app/models/user.rb:17:in `block in get_feed_post'
+  [1m[36mPost Load (0.0ms)[0m  [1m[34mSELECT "posts".* FROM "posts" WHERE "posts"."user_id" = ?[0m  [["user_id", 7]]
+  ↳ app/models/user.rb:17:in `block in get_feed_post'
+  Rendering layout layouts/application.html.haml
+  Rendering users/feed.html.haml within layouts/application
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 6], ["LIMIT", 1]]
+  ↳ app/views/users/feed.html.haml:10
+  [1m[36mLike Load (0.1ms)[0m  [1m[34mSELECT "likes".* FROM "likes" WHERE "likes"."post_id" = ?[0m  [["post_id", 9]]
+  ↳ app/views/users/_likeModal.html.haml:8
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 8], ["LIMIT", 1]]
+  ↳ app/views/users/_likeModal.html.haml:9
+  [1m[36mCACHE User Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 8], ["LIMIT", 1]]
+  ↳ app/views/users/_likeModal.html.haml:9
+  Rendered users/_likeModal.html.haml (Duration: 8.1ms | Allocations: 2280)
+  [1m[36mLike Load (0.1ms)[0m  [1m[34mSELECT "likes".* FROM "likes" WHERE "likes"."post_id" = ? AND "likes"."likeUser" = ? LIMIT ?[0m  [["post_id", 9], ["likeUser", "5"], ["LIMIT", 1]]
+  ↳ app/views/users/feed.html.haml:18
+  [1m[36mCACHE User Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 6], ["LIMIT", 1]]
+  ↳ app/views/users/feed.html.haml:10
+  [1m[36mLike Load (0.0ms)[0m  [1m[34mSELECT "likes".* FROM "likes" WHERE "likes"."post_id" = ?[0m  [["post_id", 10]]
+  ↳ app/views/users/_likeModal.html.haml:8
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 5], ["LIMIT", 1]]
+  ↳ app/views/users/_likeModal.html.haml:9
+  [1m[36mCACHE User Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 5], ["LIMIT", 1]]
+  ↳ app/views/users/_likeModal.html.haml:9
+  Rendered users/_likeModal.html.haml (Duration: 2.5ms | Allocations: 2180)
+  [1m[36mLike Load (0.1ms)[0m  [1m[34mSELECT "likes".* FROM "likes" WHERE "likes"."post_id" = ? AND "likes"."likeUser" = ? LIMIT ?[0m  [["post_id", 10], ["likeUser", "5"], ["LIMIT", 1]]
+  ↳ app/views/users/feed.html.haml:18
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 7], ["LIMIT", 1]]
+  ↳ app/views/users/feed.html.haml:10
+  [1m[36mLike Load (0.0ms)[0m  [1m[34mSELECT "likes".* FROM "likes" WHERE "likes"."post_id" = ?[0m  [["post_id", 11]]
+  ↳ app/views/users/_likeModal.html.haml:8
+  [1m[36mCACHE User Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 5], ["LIMIT", 1]]
+  ↳ app/views/users/_likeModal.html.haml:9
+  [1m[36mCACHE User Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 5], ["LIMIT", 1]]
+  ↳ app/views/users/_likeModal.html.haml:9
+  Rendered users/_likeModal.html.haml (Duration: 11.0ms | Allocations: 2133)
+  [1m[36mLike Load (0.1ms)[0m  [1m[34mSELECT "likes".* FROM "likes" WHERE "likes"."post_id" = ? AND "likes"."likeUser" = ? LIMIT ?[0m  [["post_id", 11], ["likeUser", "5"], ["LIMIT", 1]]
+  ↳ app/views/users/feed.html.haml:18
+  [1m[36mCACHE User Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 7], ["LIMIT", 1]]
+  ↳ app/views/users/feed.html.haml:10
+  [1m[36mLike Load (0.1ms)[0m  [1m[34mSELECT "likes".* FROM "likes" WHERE "likes"."post_id" = ?[0m  [["post_id", 13]]
+  ↳ app/views/users/_likeModal.html.haml:8
+  Rendered users/_likeModal.html.haml (Duration: 19.7ms | Allocations: 851)
+  [1m[36mLike Load (0.1ms)[0m  [1m[34mSELECT "likes".* FROM "likes" WHERE "likes"."post_id" = ? AND "likes"."likeUser" = ? LIMIT ?[0m  [["post_id", 13], ["likeUser", "5"], ["LIMIT", 1]]
+  ↳ app/views/users/feed.html.haml:18
+  Rendered users/feed.html.haml within layouts/application (Duration: 59.7ms | Allocations: 13742)
+[Webpacker] Everything's up-to-date. Nothing to do
+  Rendered layouts/_navigation.html.haml (Duration: 0.1ms | Allocations: 47)
+  Rendered layout layouts/application.html.haml (Duration: 73.2ms | Allocations: 17414)
+Completed 200 OK in 85ms (Views: 72.7ms | ActiveRecord: 1.1ms | Allocations: 21345)
+
+
