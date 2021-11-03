@@ -1,12 +1,10 @@
-.modal.fade{"aria-hidden" => "true", "aria-labelledby" => "exampleModalLabel", tabindex: "-1", id:"p#{p.id}"}
+.modal.fade{"aria-hidden" => "true", "aria-labelledby" => "exampleModalLabel", tabindex: "-1", id:"showlike"}
   .modal-dialog
     .modal-content
       .modal-header
-        %h5#exampleModalLabel.modal-title post#{p.id}
+        %h5#showlikeLabel.modal-title ModalLabel
         %button.btn-close{"aria-label" => "Close", "data-bs-dismiss" => "modal", type: "button"}
       .modal-body
-        - p.likes.each do |l|
-          = link_to User.find(l.likeUser).name, "/profile/#{User.find(l.likeUser).name}"
-          <br>
+        #showlikeBodyText ModalBodyText
       .modal-footer
         %button.btn.btn-secondary{"data-bs-dismiss" => "modal", type: "button"} Close

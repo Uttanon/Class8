@@ -2,6 +2,7 @@
 %p#alert= alert
 %h1 Feed of #{@user.name} (id : #{@user.id})
 .container
+  = render 'likeModal'
   .row
     .col
       -@allpost.each do |post|
@@ -11,10 +12,12 @@
             id : #{post.user_id} <br> 
             Msg : #{post.msg} <br> 
             Created-at : #{post.created_at} <br> 
-            Updated-at : #{post.updated_at}
-            = render 'likeModal', p: post
+            Updated-at : #{post.updated_at} <br>
+            %p{id:"likeby#{post.id}", hidden:""}
+              - post.likes.each do |pl|
+                = User.find(pl.likeUser).name + ","
           .col
-            %button.btn.btn-primary{"data-bs-target" => "#p#{post.id}", "data-bs-toggle" => "modal", type: "button"} Show like
+            %button.btn.btn-primary.showlike{type: "button", id:"#{post.id} #likeby#{post.id}"} Show like
             - if Like.find_by(post_id: post.id,likeUser: session[:user_id]) == nil
               = button_to 'Like', '/like', params: {pid: post.id}, class: 'btn btn-outline-primary'
             - else
@@ -22,4 +25,24 @@
         %p
     .col
       = link_to 'Post', :new_post, class: 'btn btn-outline-primary'
+:javascript
+  $(document).ready(function(){
+    $(".showlike").click(function(){
+      var input = this.id.split(" ");
+      var postID = input[0];
+      var postLikeby = $(input[1]).text().split(",");
+      for (var i = 0; i < input.length; i++){
+        var postfix = '<a href='
+        var templink = '/profile/'+postLikeby[i]+'>';
+        var link = templink.replace(/\s/g, '');
+        var tempname = postLikeby[i]
+        var name = postLikeby[i].replace(/\s/g, '');
+        var suffix = '</a></br>'
+        postLikeby[i] = postfix+link+name+suffix;
+      }
+      $("#showlikeLabel").text("post"+postID);
+      $("#showlikeBodyText").html(postLikeby);
+      $("#showlike").modal("toggle");
+    });
+  });
 
