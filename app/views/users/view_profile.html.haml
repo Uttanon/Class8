@@ -2,13 +2,16 @@
 %h1 Profile of #{@profileName} (id : #{@user.id})
 
 .container
+  = render 'likeModal'
   .row
     .col
       - User.find(@user.id).posts.each do |post|
-        = render 'likeModal', p: post
         .d-flex.p-2.border.border-primary.rounded Username : #{@profileName} <br> Message : #{post.msg} <br> Created-at : #{post.created_at} <br> Updated-at : #{post.updated_at}
+        %p{id:"likeby#{post.id}", hidden:""}
+          - post.likes.each do |pl|
+            = User.find(pl.likeUser).name + ","
         .col
-          %button.btn.btn-primary{"data-bs-target" => "#p#{post.id}", "data-bs-toggle" => "modal", type: "button"} Show like
+          %button.btn.btn-primary.showlike{type: "button", id:"#{post.id} #likeby#{post.id}"} Show like
           - if Like.find_by(post_id: post.id,likeUser: session[:user_id]) == nil
             = button_to 'Like', '/like', params: {pid: post.id}, class: 'btn btn-outline-primary'
           - else

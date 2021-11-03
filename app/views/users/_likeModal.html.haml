@@ -8,3 +8,23 @@
         #showlikeBodyText ModalBodyText
       .modal-footer
         %button.btn.btn-secondary{"data-bs-dismiss" => "modal", type: "button"} Close
+:javascript
+  $(document).ready(function(){
+    $(".showlike").click(function(){
+      var input = this.id.split(" ");
+      var postID = input[0];
+      var postLikeby = $(input[1]).text().split(",");
+      for (var i = 0; i < input.length; i++){
+        var postfix = '<a href='
+        var templink = '/profile/'+postLikeby[i]+'>';
+        var link = templink.replace(/\s/g, '');
+        var tempname = postLikeby[i]
+        var name = postLikeby[i].replace(/\s/g, '');
+        var suffix = '</a></br>'
+        postLikeby[i] = postfix+link+name+suffix;
+      }
+      $("#showlikeLabel").text("post"+postID);
+      $("#showlikeBodyText").html(postLikeby);
+      $("#showlike").modal("toggle");
+    });
+  });
