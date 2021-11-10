@@ -1,23 +1,25 @@
 %h1 Listing posts
 
-%table
-  %thead
-    %tr
+.container
+  %table#post_table.table.table-striped.table-bordered
+    %thead
       %th User
-      %th Msg
-      %th
-      %th
-      %th
-
-  %tbody
-    - @posts.each do |post|
-      %tr
-        %td= post.user.name
-        %td= post.msg
-        %td= link_to 'Show', post
-        %td= link_to 'Edit', edit_post_path(post)
-        %td= link_to 'Destroy', post, method: :delete, data: { confirm: 'Are you sure?' }
-
+      %th Message
+      %th Show
+      %th Edit
+      %th Destroy
+    %tbody
+      - @posts.each do |post|
+        %tr
+          %td= post.user.name
+          %td= post.msg
+          %td= link_to 'Show', post
+          %td= link_to 'Edit', edit_post_path(post)
+          %td= link_to 'Destroy', post, method: :delete, data: { confirm: 'Are you sure?' }
 %br
 
 = link_to 'New Post', new_post_path
+:javascript
+  $(document).ready( function () {
+    $('#post_table').DataTable();
+  } );

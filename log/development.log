@@ -49801,3 +49801,619 @@ Processing by UsersController#feed as HTML
 Completed 200 OK in 75ms (Views: 69.1ms | ActiveRecord: 1.0ms | Allocations: 27076)
 
 
+Started GET "/main" for 127.0.0.1 at 2021-11-10 20:12:15 +0700
+  [1m[35m (0.9ms)[0m  [1m[34mSELECT sqlite_version(*)[0m
+  [1m[35m (0.4ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by UsersController#login_page as HTML
+  Rendering layout layouts/application.html.haml
+  Rendering users/login_page.html.haml within layouts/application
+  Rendered users/login_page.html.haml within layouts/application (Duration: 50.6ms | Allocations: 20169)
+[Webpacker] Everything's up-to-date. Nothing to do
+  Rendered layouts/_navigation.html.haml (Duration: 6.0ms | Allocations: 14024)
+  Rendered layout layouts/application.html.haml (Duration: 102.6ms | Allocations: 46832)
+Completed 200 OK in 128ms (Views: 106.7ms | ActiveRecord: 0.3ms | Allocations: 57932)
+
+
+Started POST "/main" for 127.0.0.1 at 2021-11-10 20:12:18 +0700
+Processing by UsersController#recieve_login_info as HTML
+  Parameters: {"authenticity_token"=>"[FILTERED]", "user"=>{"email"=>"a", "password"=>"[FILTERED]"}, "commit"=>"Login"}
+  [1m[36mUser Load (2.7ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."email" = ? LIMIT ?[0m  [["email", "a"], ["LIMIT", 1]]
+  ↳ app/controllers/users_controller.rb:72:in `recieve_login_info'
+Redirected to http://localhost:3000/feed
+Completed 302 Found in 358ms (ActiveRecord: 2.7ms | Allocations: 2125)
+
+
+Started GET "/feed" for 127.0.0.1 at 2021-11-10 20:12:18 +0700
+Processing by UsersController#feed as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 5], ["LIMIT", 1]]
+  ↳ app/controllers/users_controller.rb:87:in `feed'
+  [1m[36mCACHE User Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 5], ["LIMIT", 1]]
+  ↳ app/models/user.rb:16:in `get_feed_post'
+  [1m[36mUser Load (0.5ms)[0m  [1m[34mSELECT "users".* FROM "users" INNER JOIN "follows" ON "users"."id" = "follows"."followee_id" WHERE "follows"."follower_id" = ?[0m  [["follower_id", 5]]
+  ↳ app/models/user.rb:16:in `get_feed_post'
+  [1m[36mPost Load (1.3ms)[0m  [1m[34mSELECT "posts".* FROM "posts" WHERE "posts"."user_id" = ?[0m  [["user_id", 6]]
+  ↳ app/models/user.rb:17:in `block in get_feed_post'
+  [1m[36mPost Load (0.1ms)[0m  [1m[34mSELECT "posts".* FROM "posts" WHERE "posts"."user_id" = ?[0m  [["user_id", 7]]
+  ↳ app/models/user.rb:17:in `block in get_feed_post'
+  Rendering layout layouts/application.html.haml
+  Rendering users/feed.html.haml within layouts/application
+  Rendered users/_likeModal.html.haml (Duration: 3.5ms | Allocations: 7722)
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 6], ["LIMIT", 1]]
+  ↳ app/views/users/feed.html.haml:11
+  [1m[36mLike Load (1.2ms)[0m  [1m[34mSELECT "likes".* FROM "likes" WHERE "likes"."post_id" = ?[0m  [["post_id", 9]]
+  ↳ app/views/users/feed.html.haml:17
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 8], ["LIMIT", 1]]
+  ↳ app/views/users/feed.html.haml:18
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 5], ["LIMIT", 1]]
+  ↳ app/views/users/feed.html.haml:18
+  [1m[36mLike Load (0.1ms)[0m  [1m[34mSELECT "likes".* FROM "likes" WHERE "likes"."post_id" = ? AND "likes"."likeUser" = ? LIMIT ?[0m  [["post_id", 9], ["likeUser", "5"], ["LIMIT", 1]]
+  ↳ app/views/users/feed.html.haml:21
+  [1m[36mCACHE User Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 6], ["LIMIT", 1]]
+  ↳ app/views/users/feed.html.haml:11
+  [1m[36mLike Load (0.1ms)[0m  [1m[34mSELECT "likes".* FROM "likes" WHERE "likes"."post_id" = ?[0m  [["post_id", 10]]
+  ↳ app/views/users/feed.html.haml:17
+  [1m[36mCACHE User Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 5], ["LIMIT", 1]]
+  ↳ app/views/users/feed.html.haml:18
+  [1m[36mLike Load (0.1ms)[0m  [1m[34mSELECT "likes".* FROM "likes" WHERE "likes"."post_id" = ? AND "likes"."likeUser" = ? LIMIT ?[0m  [["post_id", 10], ["likeUser", "5"], ["LIMIT", 1]]
+  ↳ app/views/users/feed.html.haml:21
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 7], ["LIMIT", 1]]
+  ↳ app/views/users/feed.html.haml:11
+  [1m[36mLike Load (0.1ms)[0m  [1m[34mSELECT "likes".* FROM "likes" WHERE "likes"."post_id" = ?[0m  [["post_id", 11]]
+  ↳ app/views/users/feed.html.haml:17
+  [1m[36mCACHE User Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 5], ["LIMIT", 1]]
+  ↳ app/views/users/feed.html.haml:18
+  [1m[36mLike Load (0.1ms)[0m  [1m[34mSELECT "likes".* FROM "likes" WHERE "likes"."post_id" = ? AND "likes"."likeUser" = ? LIMIT ?[0m  [["post_id", 11], ["likeUser", "5"], ["LIMIT", 1]]
+  ↳ app/views/users/feed.html.haml:21
+  [1m[36mCACHE User Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 7], ["LIMIT", 1]]
+  ↳ app/views/users/feed.html.haml:11
+  [1m[36mLike Load (0.1ms)[0m  [1m[34mSELECT "likes".* FROM "likes" WHERE "likes"."post_id" = ?[0m  [["post_id", 13]]
+  ↳ app/views/users/feed.html.haml:17
+  [1m[36mCACHE User Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 5], ["LIMIT", 1]]
+  ↳ app/views/users/feed.html.haml:18
+  [1m[36mLike Load (0.1ms)[0m  [1m[34mSELECT "likes".* FROM "likes" WHERE "likes"."post_id" = ? AND "likes"."likeUser" = ? LIMIT ?[0m  [["post_id", 13], ["likeUser", "5"], ["LIMIT", 1]]
+  ↳ app/views/users/feed.html.haml:21
+  Rendered users/feed.html.haml within layouts/application (Duration: 40.0ms | Allocations: 32072)
+[Webpacker] Everything's up-to-date. Nothing to do
+  Rendered layouts/_navigation.html.haml (Duration: 0.1ms | Allocations: 48)
+  Rendered layout layouts/application.html.haml (Duration: 42.8ms | Allocations: 35283)
+Completed 200 OK in 84ms (Views: 40.7ms | ActiveRecord: 4.9ms | Allocations: 51917)
+
+
+Started GET "/users" for 127.0.0.1 at 2021-11-10 20:12:22 +0700
+Processing by UsersController#index as HTML
+  Rendering layout layouts/application.html.haml
+  Rendering users/index.html.haml within layouts/application
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users"[0m
+  ↳ app/views/users/index.html.haml:14
+  Rendered users/index.html.haml within layouts/application (Duration: 17.0ms | Allocations: 4903)
+[Webpacker] Everything's up-to-date. Nothing to do
+  Rendered layouts/_navigation.html.haml (Duration: 0.1ms | Allocations: 50)
+  Rendered layout layouts/application.html.haml (Duration: 21.2ms | Allocations: 8148)
+Completed 200 OK in 22ms (Views: 21.3ms | ActiveRecord: 0.1ms | Allocations: 8868)
+
+
+Started GET "/users" for 127.0.0.1 at 2021-11-10 20:14:15 +0700
+Processing by UsersController#index as HTML
+  Rendering layout layouts/application.html.haml
+  Rendering users/index.html.haml within layouts/application
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users"[0m
+  ↳ app/views/users/index.html.haml:14
+  Rendered users/index.html.haml within layouts/application (Duration: 36.5ms | Allocations: 5007)
+[Webpacker] Everything's up-to-date. Nothing to do
+  Rendered layouts/_navigation.html.haml (Duration: 18.6ms | Allocations: 14003)
+  Rendered layout layouts/application.html.haml (Duration: 75.1ms | Allocations: 28293)
+Completed 200 OK in 77ms (Views: 76.0ms | ActiveRecord: 0.1ms | Allocations: 29746)
+
+
+Started GET "/users" for 127.0.0.1 at 2021-11-10 20:15:22 +0700
+Processing by UsersController#index as HTML
+  Rendering layout layouts/application.html.haml
+  Rendering users/index.html.haml within layouts/application
+  Rendered users/index.html.haml within layouts/application (Duration: 24.3ms | Allocations: 7384)
+  Rendered layout layouts/application.html.haml (Duration: 24.6ms | Allocations: 7469)
+Completed 500 Internal Server Error in 27ms (ActiveRecord: 0.0ms | Allocations: 8889)
+
+
+  
+ActionView::SyntaxErrorInTemplate (Encountered a syntax error while rendering template: check %h1 Listing users
+
+%table{:id = test}
+  %thead
+    %tr
+      %th Name
+      %th Email
+      %th Password digest
+      %th
+      %th
+      %th
+
+  %tbody
+    - @users.each do |user|
+      %tr
+        %td= user.name
+        %td= user.email
+        %td= user.password_digest
+        %td= link_to 'Show', user
+        %td= link_to 'Edit', edit_user_path(user)
+        %td= link_to 'Destroy', user, method: :delete, data: { confirm: 'Are you sure?' }
+
+%br
+
+= link_to 'New User', new_user_path
+
+):
+1:    %h1 Listing users
+2:    
+3:    %table{:id = test}
+4:      %thead
+5:        %tr
+6:          %th Name
+7:          %th Email
+8:          %th Password digest
+9:          %th
+10:          %th
+11:          %th
+12:    
+13:      %tbody
+14:        - @users.each do |user|
+15:          %tr
+16:            %td= user.name
+17:            %td= user.email
+18:            %td= user.password_digest
+19:            %td= link_to 'Show', user
+20:            %td= link_to 'Edit', edit_user_path(user)
+21:            %td= link_to 'Destroy', user, method: :delete, data: { confirm: 'Are you sure?' }
+22:    
+23:    %br
+24:    
+25:    = link_to 'New User', new_user_path
+  
+app/views/users/index.html.haml:3: syntax error, unexpected '=', expecting ')'
+app/views/users/index.html.haml:3: syntax error, unexpected ')', expecting `end'
+app/views/users/index.html.haml:3: syntax error, unexpected '=', expecting ')'
+app/views/users/index.html.haml:3: syntax error, unexpected ')', expecting `end'
+app/views/users/index.html.haml:3: syntax error, unexpected '=', expecting ')'
+app/views/users/index.html.haml:3: syntax error, unexpected ')', expecting `end'
+app/views/users/index.html.haml:3: syntax error, unexpected '=', expecting ')'
+app/views/users/index.html.haml:3: syntax error, unexpected ')', expecting `end'
+app/views/users/index.html.haml:3: syntax error, unexpected '=', expecting ')'
+app/views/users/index.html.haml:3: syntax error, unexpected ')', expecting `end'
+app/views/users/index.html.haml:3: syntax error, unexpected '=', expecting ')'
+app/views/users/index.html.haml:3: syntax error, unexpected ')', expecting `end'
+Started GET "/users" for 127.0.0.1 at 2021-11-10 20:15:40 +0700
+Processing by UsersController#index as HTML
+  Rendering layout layouts/application.html.haml
+  Rendering users/index.html.haml within layouts/application
+  Rendered users/index.html.haml within layouts/application (Duration: 3.0ms | Allocations: 4847)
+  Rendered layout layouts/application.html.haml (Duration: 3.2ms | Allocations: 4922)
+Completed 500 Internal Server Error in 5ms (ActiveRecord: 0.0ms | Allocations: 6313)
+
+
+  
+ActionView::SyntaxErrorInTemplate (Encountered a syntax error while rendering template: check %h1 Listing users
+
+%table{:id = "test"}
+  %thead
+    %tr
+      %th Name
+      %th Email
+      %th Password digest
+      %th
+      %th
+      %th
+
+  %tbody
+    - @users.each do |user|
+      %tr
+        %td= user.name
+        %td= user.email
+        %td= user.password_digest
+        %td= link_to 'Show', user
+        %td= link_to 'Edit', edit_user_path(user)
+        %td= link_to 'Destroy', user, method: :delete, data: { confirm: 'Are you sure?' }
+
+%br
+
+= link_to 'New User', new_user_path
+
+):
+1:    %h1 Listing users
+2:    
+3:    %table{:id = "test"}
+4:      %thead
+5:        %tr
+6:          %th Name
+7:          %th Email
+8:          %th Password digest
+9:          %th
+10:          %th
+11:          %th
+12:    
+13:      %tbody
+14:        - @users.each do |user|
+15:          %tr
+16:            %td= user.name
+17:            %td= user.email
+18:            %td= user.password_digest
+19:            %td= link_to 'Show', user
+20:            %td= link_to 'Edit', edit_user_path(user)
+21:            %td= link_to 'Destroy', user, method: :delete, data: { confirm: 'Are you sure?' }
+22:    
+23:    %br
+24:    
+25:    = link_to 'New User', new_user_path
+  
+app/views/users/index.html.haml:3: syntax error, unexpected '=', expecting ')'
+app/views/users/index.html.haml:3: syntax error, unexpected ')', expecting `end'
+app/views/users/index.html.haml:3: syntax error, unexpected '=', expecting ')'
+app/views/users/index.html.haml:3: syntax error, unexpected ')', expecting `end'
+app/views/users/index.html.haml:3: syntax error, unexpected '=', expecting ')'
+app/views/users/index.html.haml:3: syntax error, unexpected ')', expecting `end'
+app/views/users/index.html.haml:3: syntax error, unexpected '=', expecting ')'
+app/views/users/index.html.haml:3: syntax error, unexpected ')', expecting `end'
+app/views/users/index.html.haml:3: syntax error, unexpected '=', expecting ')'
+app/views/users/index.html.haml:3: syntax error, unexpected ')', expecting `end'
+app/views/users/index.html.haml:3: syntax error, unexpected '=', expecting ')'
+app/views/users/index.html.haml:3: syntax error, unexpected ')', expecting `end'
+Started GET "/users" for 127.0.0.1 at 2021-11-10 20:15:48 +0700
+Processing by UsersController#index as HTML
+  Rendering layout layouts/application.html.haml
+  Rendering users/index.html.haml within layouts/application
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users"[0m
+  ↳ app/views/users/index.html.haml:14
+  Rendered users/index.html.haml within layouts/application (Duration: 6.0ms | Allocations: 5159)
+[Webpacker] Everything's up-to-date. Nothing to do
+  Rendered layouts/_navigation.html.haml (Duration: 20.4ms | Allocations: 14005)
+  Rendered layout layouts/application.html.haml (Duration: 53.2ms | Allocations: 28441)
+Completed 200 OK in 57ms (Views: 56.0ms | ActiveRecord: 0.1ms | Allocations: 29879)
+
+
+Started GET "/users" for 127.0.0.1 at 2021-11-10 20:16:26 +0700
+Processing by UsersController#index as HTML
+  Rendering layout layouts/application.html.haml
+  Rendering users/index.html.haml within layouts/application
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users"[0m
+  ↳ app/views/users/index.html.haml:14
+  Rendered users/index.html.haml within layouts/application (Duration: 8.4ms | Allocations: 5141)
+[Webpacker] Everything's up-to-date. Nothing to do
+  Rendered layouts/_navigation.html.haml (Duration: 5.6ms | Allocations: 13959)
+  Rendered layout layouts/application.html.haml (Duration: 37.3ms | Allocations: 28348)
+Completed 200 OK in 39ms (Views: 38.2ms | ActiveRecord: 0.1ms | Allocations: 29773)
+
+
+Started GET "/users" for 127.0.0.1 at 2021-11-10 20:16:40 +0700
+Processing by UsersController#index as HTML
+  Rendering layout layouts/application.html.haml
+  Rendering users/index.html.haml within layouts/application
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users"[0m
+  ↳ app/views/users/index.html.haml:14
+  Rendered users/index.html.haml within layouts/application (Duration: 5.0ms | Allocations: 5139)
+[Webpacker] Everything's up-to-date. Nothing to do
+  Rendered layouts/_navigation.html.haml (Duration: 5.7ms | Allocations: 13959)
+  Rendered layout layouts/application.html.haml (Duration: 32.6ms | Allocations: 28343)
+Completed 200 OK in 39ms (Views: 34.1ms | ActiveRecord: 0.1ms | Allocations: 29763)
+
+
+Started GET "/users" for 127.0.0.1 at 2021-11-10 20:18:02 +0700
+Processing by UsersController#index as HTML
+  Rendering layout layouts/application.html.haml
+  Rendering users/index.html.haml within layouts/application
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users"[0m
+  ↳ app/views/users/index.html.haml:14
+  Rendered users/index.html.haml within layouts/application (Duration: 6.5ms | Allocations: 5142)
+[Webpacker] Everything's up-to-date. Nothing to do
+  Rendered layouts/_navigation.html.haml (Duration: 17.4ms | Allocations: 14004)
+  Rendered layout layouts/application.html.haml (Duration: 48.4ms | Allocations: 29254)
+Completed 200 OK in 51ms (Views: 50.1ms | ActiveRecord: 0.1ms | Allocations: 30679)
+
+
+Started GET "/users" for 127.0.0.1 at 2021-11-10 20:20:05 +0700
+Processing by UsersController#index as HTML
+  Rendering layout layouts/application.html.haml
+  Rendering users/index.html.haml within layouts/application
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users"[0m
+  ↳ app/views/users/index.html.haml:14
+  Rendered users/index.html.haml within layouts/application (Duration: 16.4ms | Allocations: 5364)
+[Webpacker] Everything's up-to-date. Nothing to do
+  Rendered layouts/_navigation.html.haml (Duration: 8.5ms | Allocations: 13959)
+  Rendered layout layouts/application.html.haml (Duration: 36.6ms | Allocations: 29402)
+Completed 200 OK in 38ms (Views: 37.5ms | ActiveRecord: 0.1ms | Allocations: 30827)
+
+
+Started GET "/users" for 127.0.0.1 at 2021-11-10 20:21:04 +0700
+Processing by UsersController#index as HTML
+  Rendering layout layouts/application.html.haml
+  Rendering users/index.html.haml within layouts/application
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users"[0m
+  ↳ app/views/users/index.html.haml:14
+  Rendered users/index.html.haml within layouts/application (Duration: 8.7ms | Allocations: 5356)
+[Webpacker] Everything's up-to-date. Nothing to do
+  Rendered layouts/_navigation.html.haml (Duration: 8.8ms | Allocations: 13959)
+  Rendered layout layouts/application.html.haml (Duration: 49.3ms | Allocations: 29391)
+Completed 200 OK in 54ms (Views: 52.7ms | ActiveRecord: 0.1ms | Allocations: 30811)
+
+
+Started GET "/users" for 127.0.0.1 at 2021-11-10 20:21:54 +0700
+Processing by UsersController#index as HTML
+  Rendering layout layouts/application.html.haml
+  Rendering users/index.html.haml within layouts/application
+  Rendered users/index.html.haml within layouts/application (Duration: 1.0ms | Allocations: 2112)
+  Rendered layout layouts/application.html.haml (Duration: 1.2ms | Allocations: 2186)
+Completed 500 Internal Server Error in 5ms (ActiveRecord: 0.0ms | Allocations: 3578)
+
+
+  
+ActionView::Template::Error (The line was indented 2 levels deeper than the previous line.):
+    2: 
+    3: %table{:id => "user_table"}
+    4:   %thead
+    5:       %th Name
+    6:       %th Email
+    7:       %th Password digest
+    8:       %th
+  
+app/views/users/index.html.haml:5
+Started GET "/users" for 127.0.0.1 at 2021-11-10 20:22:33 +0700
+Processing by UsersController#index as HTML
+  Rendering layout layouts/application.html.haml
+  Rendering users/index.html.haml within layouts/application
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users"[0m
+  ↳ app/views/users/index.html.haml:12
+  Rendered users/index.html.haml within layouts/application (Duration: 4.3ms | Allocations: 5289)
+[Webpacker] Everything's up-to-date. Nothing to do
+  Rendered layouts/_navigation.html.haml (Duration: 31.5ms | Allocations: 14015)
+  Rendered layout layouts/application.html.haml (Duration: 44.0ms | Allocations: 29405)
+Completed 200 OK in 53ms (Views: 52.0ms | ActiveRecord: 0.1ms | Allocations: 30843)
+
+
+Started GET "/users" for 127.0.0.1 at 2021-11-10 20:23:44 +0700
+Processing by UsersController#index as HTML
+  Rendering layout layouts/application.html.haml
+  Rendering users/index.html.haml within layouts/application
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users"[0m
+  ↳ app/views/users/index.html.haml:12
+  Rendered users/index.html.haml within layouts/application (Duration: 16.5ms | Allocations: 11248)
+[Webpacker] Everything's up-to-date. Nothing to do
+  Rendered layouts/_navigation.html.haml (Duration: 7.5ms | Allocations: 13959)
+  Rendered layout layouts/application.html.haml (Duration: 47.5ms | Allocations: 35294)
+Completed 200 OK in 52ms (Views: 50.7ms | ActiveRecord: 0.3ms | Allocations: 36719)
+
+
+Started GET "/users" for 127.0.0.1 at 2021-11-10 20:24:42 +0700
+Processing by UsersController#index as HTML
+  Rendering layout layouts/application.html.haml
+  Rendering users/index.html.haml within layouts/application
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users"[0m
+  ↳ app/views/users/index.html.haml:13
+  Rendered users/index.html.haml within layouts/application (Duration: 13.0ms | Allocations: 11450)
+[Webpacker] Everything's up-to-date. Nothing to do
+  Rendered layouts/_navigation.html.haml (Duration: 21.5ms | Allocations: 13964)
+  Rendered layout layouts/application.html.haml (Duration: 52.3ms | Allocations: 35490)
+Completed 200 OK in 56ms (Views: 55.3ms | ActiveRecord: 0.1ms | Allocations: 36910)
+
+
+Started GET "/users" for 127.0.0.1 at 2021-11-10 20:25:10 +0700
+Processing by UsersController#index as HTML
+  Rendering layout layouts/application.html.haml
+  Rendering users/index.html.haml within layouts/application
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users"[0m
+  ↳ app/views/users/index.html.haml:13
+  Rendered users/index.html.haml within layouts/application (Duration: 5.9ms | Allocations: 11498)
+[Webpacker] Everything's up-to-date. Nothing to do
+  Rendered layouts/_navigation.html.haml (Duration: 6.8ms | Allocations: 14004)
+  Rendered layout layouts/application.html.haml (Duration: 38.6ms | Allocations: 35600)
+Completed 200 OK in 43ms (Views: 41.5ms | ActiveRecord: 0.1ms | Allocations: 37025)
+
+
+Started GET "/users" for 127.0.0.1 at 2021-11-10 20:25:41 +0700
+Processing by UsersController#index as HTML
+  Rendering layout layouts/application.html.haml
+  Rendering users/index.html.haml within layouts/application
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users"[0m
+  ↳ app/views/users/index.html.haml:13
+  Rendered users/index.html.haml within layouts/application (Duration: 8.9ms | Allocations: 11843)
+[Webpacker] Everything's up-to-date. Nothing to do
+  Rendered layouts/_navigation.html.haml (Duration: 7.3ms | Allocations: 13959)
+  Rendered layout layouts/application.html.haml (Duration: 41.8ms | Allocations: 35889)
+Completed 200 OK in 44ms (Views: 43.0ms | ActiveRecord: 0.1ms | Allocations: 37314)
+
+
+Started GET "/users" for 127.0.0.1 at 2021-11-10 20:25:52 +0700
+Processing by UsersController#index as HTML
+  Rendering layout layouts/application.html.haml
+  Rendering users/index.html.haml within layouts/application
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users"[0m
+  ↳ app/views/users/index.html.haml:13
+  Rendered users/index.html.haml within layouts/application (Duration: 9.0ms | Allocations: 5876)
+[Webpacker] Everything's up-to-date. Nothing to do
+  Rendered layouts/_navigation.html.haml (Duration: 23.4ms | Allocations: 14002)
+  Rendered layout layouts/application.html.haml (Duration: 48.5ms | Allocations: 29960)
+Completed 200 OK in 51ms (Views: 49.7ms | ActiveRecord: 0.1ms | Allocations: 31380)
+
+
+Started GET "/users" for 127.0.0.1 at 2021-11-10 20:26:11 +0700
+Processing by UsersController#index as HTML
+  Rendering layout layouts/application.html.haml
+  Rendering users/index.html.haml within layouts/application
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users"[0m
+  ↳ app/views/users/index.html.haml:13
+  Rendered users/index.html.haml within layouts/application (Duration: 6.2ms | Allocations: 5889)
+[Webpacker] Everything's up-to-date. Nothing to do
+  Rendered layouts/_navigation.html.haml (Duration: 5.4ms | Allocations: 13993)
+  Rendered layout layouts/application.html.haml (Duration: 34.1ms | Allocations: 29984)
+Completed 200 OK in 48ms (Views: 47.1ms | ActiveRecord: 0.1ms | Allocations: 31409)
+
+
+Started GET "/users" for 127.0.0.1 at 2021-11-10 20:27:31 +0700
+Processing by UsersController#index as HTML
+  Rendering layout layouts/application.html.haml
+  Rendering users/index.html.haml within layouts/application
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users"[0m
+  ↳ app/views/users/index.html.haml:13
+  Rendered users/index.html.haml within layouts/application (Duration: 3.8ms | Allocations: 5879)
+[Webpacker] Everything's up-to-date. Nothing to do
+  Rendered layouts/_navigation.html.haml (Duration: 5.6ms | Allocations: 13959)
+  Rendered layout layouts/application.html.haml (Duration: 39.3ms | Allocations: 29925)
+Completed 200 OK in 42ms (Views: 41.2ms | ActiveRecord: 0.1ms | Allocations: 31350)
+
+
+Started GET "/users" for 127.0.0.1 at 2021-11-10 20:27:35 +0700
+Processing by UsersController#index as HTML
+  Rendering layout layouts/application.html.haml
+  Rendering users/index.html.haml within layouts/application
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users"[0m
+  ↳ app/views/users/index.html.haml:13
+  Rendered users/index.html.haml within layouts/application (Duration: 24.5ms | Allocations: 5879)
+[Webpacker] Everything's up-to-date. Nothing to do
+  Rendered layouts/_navigation.html.haml (Duration: 20.2ms | Allocations: 14017)
+  Rendered layout layouts/application.html.haml (Duration: 88.5ms | Allocations: 29975)
+Completed 200 OK in 90ms (Views: 89.4ms | ActiveRecord: 0.1ms | Allocations: 31395)
+
+
+Started GET "/users" for 127.0.0.1 at 2021-11-10 20:29:21 +0700
+Processing by UsersController#index as HTML
+  Rendering layout layouts/application.html.haml
+  Rendering users/index.html.haml within layouts/application
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users"[0m
+  ↳ app/views/users/index.html.haml:13
+  Rendered users/index.html.haml within layouts/application (Duration: 3.3ms | Allocations: 5886)
+[Webpacker] Everything's up-to-date. Nothing to do
+  Rendered layouts/_navigation.html.haml (Duration: 5.7ms | Allocations: 14000)
+  Rendered layout layouts/application.html.haml (Duration: 39.4ms | Allocations: 30402)
+Completed 200 OK in 41ms (Views: 40.4ms | ActiveRecord: 0.1ms | Allocations: 31827)
+
+
+Started GET "/users" for 127.0.0.1 at 2021-11-10 20:29:56 +0700
+Processing by UsersController#index as HTML
+  Rendering layout layouts/application.html.haml
+  Rendering users/index.html.haml within layouts/application
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users"[0m
+  ↳ app/views/users/index.html.haml:13
+  Rendered users/index.html.haml within layouts/application (Duration: 23.8ms | Allocations: 5880)
+[Webpacker] Everything's up-to-date. Nothing to do
+  Rendered layouts/_navigation.html.haml (Duration: 5.4ms | Allocations: 13961)
+  Rendered layout layouts/application.html.haml (Duration: 68.7ms | Allocations: 30762)
+Completed 200 OK in 70ms (Views: 69.6ms | ActiveRecord: 0.1ms | Allocations: 32187)
+
+
+Started GET "/users" for 127.0.0.1 at 2021-11-10 20:30:17 +0700
+Processing by UsersController#index as HTML
+  Rendering layout layouts/application.html.haml
+  Rendering users/index.html.haml within layouts/application
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users"[0m
+  ↳ app/views/users/index.html.haml:13
+  Rendered users/index.html.haml within layouts/application (Duration: 5.6ms | Allocations: 5887)
+[Webpacker] Everything's up-to-date. Nothing to do
+  Rendered layouts/_navigation.html.haml (Duration: 7.1ms | Allocations: 14000)
+  Rendered layout layouts/application.html.haml (Duration: 33.6ms | Allocations: 30828)
+Completed 200 OK in 47ms (Views: 46.4ms | ActiveRecord: 0.1ms | Allocations: 32248)
+
+
+Started GET "/users" for 127.0.0.1 at 2021-11-10 20:30:22 +0700
+Processing by UsersController#index as HTML
+  Rendering layout layouts/application.html.haml
+  Rendering users/index.html.haml within layouts/application
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users"[0m
+  ↳ app/views/users/index.html.haml:13
+  Rendered users/index.html.haml within layouts/application (Duration: 16.0ms | Allocations: 5885)
+[Webpacker] Everything's up-to-date. Nothing to do
+  Rendered layouts/_navigation.html.haml (Duration: 5.9ms | Allocations: 14000)
+  Rendered layout layouts/application.html.haml (Duration: 45.3ms | Allocations: 30817)
+Completed 200 OK in 47ms (Views: 46.0ms | ActiveRecord: 0.1ms | Allocations: 32242)
+
+
+Started GET "/users" for 127.0.0.1 at 2021-11-10 20:30:33 +0700
+Processing by UsersController#index as HTML
+  Rendering layout layouts/application.html.haml
+  Rendering users/index.html.haml within layouts/application
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users"[0m
+  ↳ app/views/users/index.html.haml:13
+  Rendered users/index.html.haml within layouts/application (Duration: 7.2ms | Allocations: 5529)
+[Webpacker] Everything's up-to-date. Nothing to do
+  Rendered layouts/_navigation.html.haml (Duration: 16.5ms | Allocations: 13961)
+  Rendered layout layouts/application.html.haml (Duration: 46.4ms | Allocations: 30415)
+Completed 200 OK in 48ms (Views: 47.2ms | ActiveRecord: 0.1ms | Allocations: 31840)
+
+
+Started GET "/posts" for 127.0.0.1 at 2021-11-10 20:30:47 +0700
+Processing by PostsController#index as HTML
+  Rendering layout layouts/application.html.haml
+  Rendering posts/index.html.haml within layouts/application
+  [1m[36mPost Load (0.1ms)[0m  [1m[34mSELECT "posts".* FROM "posts"[0m
+  ↳ app/views/posts/index.html.haml:13
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 5], ["LIMIT", 1]]
+  ↳ app/views/posts/index.html.haml:15
+  [1m[36mCACHE User Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 5], ["LIMIT", 1]]
+  ↳ app/views/posts/index.html.haml:15
+  [1m[36mCACHE User Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 5], ["LIMIT", 1]]
+  ↳ app/views/posts/index.html.haml:15
+  [1m[36mCACHE User Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 5], ["LIMIT", 1]]
+  ↳ app/views/posts/index.html.haml:15
+  [1m[36mCACHE User Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 5], ["LIMIT", 1]]
+  ↳ app/views/posts/index.html.haml:15
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 6], ["LIMIT", 1]]
+  ↳ app/views/posts/index.html.haml:15
+  [1m[36mCACHE User Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 6], ["LIMIT", 1]]
+  ↳ app/views/posts/index.html.haml:15
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 7], ["LIMIT", 1]]
+  ↳ app/views/posts/index.html.haml:15
+  [1m[36mCACHE User Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 5], ["LIMIT", 1]]
+  ↳ app/views/posts/index.html.haml:15
+  [1m[36mCACHE User Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 7], ["LIMIT", 1]]
+  ↳ app/views/posts/index.html.haml:15
+  [1m[36mCACHE User Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 5], ["LIMIT", 1]]
+  ↳ app/views/posts/index.html.haml:15
+  [1m[36mCACHE User Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 5], ["LIMIT", 1]]
+  ↳ app/views/posts/index.html.haml:15
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 8], ["LIMIT", 1]]
+  ↳ app/views/posts/index.html.haml:15
+  [1m[36mCACHE User Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 5], ["LIMIT", 1]]
+  ↳ app/views/posts/index.html.haml:15
+  Rendered posts/index.html.haml within layouts/application (Duration: 47.5ms | Allocations: 16217)
+[Webpacker] Everything's up-to-date. Nothing to do
+  Rendered layouts/_navigation.html.haml (Duration: 0.1ms | Allocations: 50)
+  Rendered layout layouts/application.html.haml (Duration: 62.0ms | Allocations: 19486)
+Completed 200 OK in 64ms (Views: 63.1ms | ActiveRecord: 0.6ms | Allocations: 20798)
+
+
+Started GET "/posts" for 127.0.0.1 at 2021-11-10 20:32:23 +0700
+Processing by PostsController#index as HTML
+  Rendering layout layouts/application.html.haml
+  Rendering posts/index.html.haml within layouts/application
+  [1m[36mPost Load (0.1ms)[0m  [1m[34mSELECT "posts".* FROM "posts"[0m
+  ↳ app/views/posts/index.html.haml:12
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 5], ["LIMIT", 1]]
+  ↳ app/views/posts/index.html.haml:14
+  [1m[36mCACHE User Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 5], ["LIMIT", 1]]
+  ↳ app/views/posts/index.html.haml:14
+  [1m[36mCACHE User Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 5], ["LIMIT", 1]]
+  ↳ app/views/posts/index.html.haml:14
+  [1m[36mCACHE User Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 5], ["LIMIT", 1]]
+  ↳ app/views/posts/index.html.haml:14
+  [1m[36mCACHE User Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 5], ["LIMIT", 1]]
+  ↳ app/views/posts/index.html.haml:14
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 6], ["LIMIT", 1]]
+  ↳ app/views/posts/index.html.haml:14
+  [1m[36mCACHE User Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 6], ["LIMIT", 1]]
+  ↳ app/views/posts/index.html.haml:14
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 7], ["LIMIT", 1]]
+  ↳ app/views/posts/index.html.haml:14
+  [1m[36mCACHE User Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 5], ["LIMIT", 1]]
+  ↳ app/views/posts/index.html.haml:14
+  [1m[36mCACHE User Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 7], ["LIMIT", 1]]
+  ↳ app/views/posts/index.html.haml:14
+  [1m[36mCACHE User Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 5], ["LIMIT", 1]]
+  ↳ app/views/posts/index.html.haml:14
+  [1m[36mCACHE User Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 5], ["LIMIT", 1]]
+  ↳ app/views/posts/index.html.haml:14
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 8], ["LIMIT", 1]]
+  ↳ app/views/posts/index.html.haml:14
+  [1m[36mCACHE User Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 5], ["LIMIT", 1]]
+  ↳ app/views/posts/index.html.haml:14
+  Rendered posts/index.html.haml within layouts/application (Duration: 55.7ms | Allocations: 16592)
+[Webpacker] Everything's up-to-date. Nothing to do
+  Rendered layouts/_navigation.html.haml (Duration: 6.4ms | Allocations: 14002)
+  Rendered layout layouts/application.html.haml (Duration: 93.9ms | Allocations: 41528)
+Completed 200 OK in 97ms (Views: 95.1ms | ActiveRecord: 0.6ms | Allocations: 42960)
+
+
